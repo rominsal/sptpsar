@@ -5,8 +5,9 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
                            cnopar,dnoparlist,bdegnopar,pordnopar,nknotsnopar,
                            names_varnopar,names_varpar,
                            psanova, f1_main, f2_main,
-                           f12_int, sar = FALSE, rho_init = NULL, rho_fixed = NULL,
-                           bold = NULL, maxit = 30, thr = 1e-2, trace=TRUE,
+                           f12_int, sar = FALSE, rho_init = 0,
+                           rho_fixed = FALSE,
+                           bold = NULL, maxit = 30, thr = 1e-2, trace=FALSE,
                            var_num = FALSE)
 {
   nsp_full <- length(sp1)
@@ -20,9 +21,7 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
   X <- Matrix::Matrix(Xfull)
   Z <- Matrix::Matrix(Zfull)
   if (!is.null(nknotsnopar)) nvarnopar <- length(nknotsnopar)
-  if (is.null(rho_init)) rho_init <- 0
   if (!sar) rho_fixed <- TRUE
-  if (sar & is.null(rho_fixed)) rho_fixed <- FALSE
 
   # Build vector and matrices for variance components in mixed model
   var_comp <- par_var_comp2d(la = var(as.numeric(y)), np_fixed = ncol(X),
@@ -57,7 +56,7 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
   if (is.null(bold)) bold = rep(0,sum(np_eff))
   eta <- X %*% bold[1:np_eff[1]] + Z %*% bold[-(1:np_eff[1])] #+ offset
 
-  if (trace) start <- proc.time()[3]
+  start <- proc.time()[3]
   for (iq in 1:maxit) { # Nested loops for SAP and rho (for SAR case)
       for (it in 1:maxit) {
 	      rho <- la[length(la)]
@@ -184,10 +183,10 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
 	   }
 	   if (drho < thr) break
 	} # End loop for SAR
-  if (trace) {
+  #if (trace) {
      end <- proc.time()[3]
 		 cat("\n Time to fit the model: ", (end-start), "seconds")
-	}
+	#}
   eta <- X %*% bfixed + Z %*% brandom #+ offset
   if (is.null(names_varnopar)) { edfnopar <- NULL; taunopar<-NULL }
 
@@ -238,10 +237,10 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
   names(se_bfixed) <- names(bfixed)
   se_brandom <- sqrt(diag(as.matrix(cov1_eff[names(brandom),names(brandom)])))
   names(se_brandom) <- names(brandom)
-  if (trace) {
+  #if (trace) {
     end <- proc.time()[3]
     cat("\n Time to compute covariances: ", (end-start), "seconds")
-  }
+  #}
   # 		  # Matriz Covarianzas Frequentist tipo Sandwich (Algo menor las varianzas)
   # 		  C.Rinv.C <- (1/sig2u)*rbind(cbind(Matrix::crossprod(X),
   # 		                                    Matrix::t(X) %*% Z),
@@ -287,6 +286,6 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
               se_bfixed = se_bfixed, se_brandom = se_brandom,
               llik = llik, llik_reml = llik_reml,
               aic = aic, bic = bic,
-              cov_bfixed_brandom = cov1_eff,
+              vcov_b = cov1_eff,
               sp1 = sp1,sp2 = sp2, time = NULL)
 } # end of function

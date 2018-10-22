@@ -8,10 +8,10 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
                            f1_main = TRUE, f2_main = TRUE, ft_main = TRUE,
                            f12_int = FALSE, f1t_int = FALSE,
                            f2t_int = FALSE, f12t_int = FALSE,
-                           sar = FALSE, rho_init = NULL, rho_fixed = NULL,
-                           ar1 = FALSE, phi_init = NULL, phi_fixed = NULL,
-                           bold = NULL, maxit = 20, thr = 1e-2, trace=TRUE,
-                           var_num = FALSE)
+                           sar = FALSE, rho_init = 0, rho_fixed = FALSE,
+                           ar1 = FALSE, phi_init = 0, phi_fixed = FALSE,
+                           bold = NULL, maxit = 20, thr = 1e-2,
+                           trace = FALSE, var_num = FALSE)
 {
   nsp <- length(sp1);  ntime <- length(time)
   if (!is.null(Wsp)) Wsp <- Matrix::Matrix(Wsp)
@@ -19,8 +19,6 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
   X <- Matrix::Matrix(Xfull)
   Z <- Matrix::Matrix(Zfull)
   if (!is.null(nknotsnopar)) nvarnopar <- length(nknotsnopar)
-  if (is.null(rho_init)) rho_init <- 0
-  if (is.null(phi_init)) phi_init <- 0
   if (!sar){
     rho_fixed <- TRUE
     rho_init <- 0
@@ -83,7 +81,7 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
   if (is.null(bold)) bold = rep(0,sum(np_eff))
   eta <- X %*% bold[1:np_eff[1]] + Z %*% bold[-(1:np_eff[1])] #+ offset
 
-  if (trace) start <- proc.time()[3]
+  start <- proc.time()[3]
   for (iq in 1:maxit) { # Nested loops for SAP and phi (AR1) and rho (SAR)
       for (it in 1:maxit) {
 	      rho <- la[length(la)-1]
@@ -209,7 +207,7 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
 	        cat('\n sig2u ',la[1])
 	        cat('\n edfspt:',round(edfspt,2))
 	        if (!is.null(edfnopar)) cat('\n edfnopar: ',round(edfnopar,2),'\n')
-	        }
+	      }
 	      #  convergence check
 	      if (dla < thr) break
 	    } # end for (it in 1:maxit)
@@ -263,10 +261,8 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
 	     }
 	     if (drhophi < thr) break
 	  } # End loop for SAR-AR1
-  if (trace) {
-    end <- proc.time()[3]
-    cat("\n Time to fit the model: ", (end-start), "seconds")
-  }
+  end <- proc.time()[3]
+  cat("\n Time to fit the model: ", (end-start), "seconds")
   eta <- Xstar%*%bfixed + Zstar%*%brandom #+ offset
   if (is.null(names_varnopar)) { edfnopar <- NULL; taunopar<-NULL }
 #  FINAL ESTIMATES OF PARAMETERS
@@ -329,7 +325,7 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
   Xstar <- Uchol_Rinv %*% X
   Zstar <- Uchol_Rinv %*% Z
   # 		  #Astar <- as.matrix(chol.Rinv)%*%kronecker(A,It)
-  if (trace) start <- proc.time()[3]
+  start <- proc.time()[3]
   A_cov1 <- rbind(cbind(Matrix::crossprod(Xstar),
                         Matrix::t(Xstar) %*% Zstar),
                   cbind(Matrix::t(Zstar) %*% Xstar,
@@ -349,10 +345,8 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
   names(se_bfixed) <- names(bfixed)
   se_brandom <- sqrt(diag(as.matrix(cov1_eff[names(brandom),names(brandom)])))
   names(se_brandom) <- names(brandom)
-  if (trace) {
-    end <- proc.time()[3]
-    cat("\n Time to compute covariances: ", (end-start), "seconds")
-  }
+  end <- proc.time()[3]
+  cat("\n Time to compute covariances: ", (end-start), "seconds")
   # 		  # Matriz Covarianzas Frequentist tipo Sandwich (Algo menor las varianzas)
   # 		  # C.Rinv.C <- (1/sig2u)*rbind(cbind(t(X)%*%kronecker(Diagonal(nsp),Omegainv)%*%X,
   # 		  #                                   t(X)%*%kronecker(Diagonal(nsp),Omegainv)%*%Z),
@@ -408,6 +402,6 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
               se_bfixed = se_bfixed, se_brandom = se_brandom,
               llik = llik, llik_reml = llik_reml,
               aic = aic, bic = bic,
-              cov_bfixed_brandom = cov1_eff,
+              vcov_b = cov1_eff,
               sp1 = sp1,sp2 = sp2, time = time)
 } # end of function

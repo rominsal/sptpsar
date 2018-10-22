@@ -17,7 +17,7 @@ eff_par <- function(sptsarfit,variables,
                               names(bfixed), value=TRUE))
   bfixed_par <- bfixed[match_varpar]
 
-  cov_b <- sptsarfit$var_betas_alphas
+  cov_b <- sptsarfit$vcov_b
   row_cov_fixed <- c(grepl("fixed",rownames(cov_b)))
   col_cov_fixed <- c(grepl("fixed",colnames(cov_b)))
   cov_bfixed <- cov_b[row_cov_fixed,col_cov_fixed]
@@ -54,7 +54,8 @@ eff_par <- function(sptsarfit,variables,
   tot_eff <- dir_eff <- ind_eff <- NULL
   if(!is.null(seed)) set.seed(seed)
   if(!is.null(Wsp)){
-    trWsp <- spdep::trW(Wsp,m=m,p=p,type="MC")
+    #if(class(Wsp)=="CsparseMatrix") Wsp <- as(Wsp,"CsparseMatrix")
+    trWsp <- spdep::trW(as(Wsp,"CsparseMatrix"),m=m,p=p,type="MC")
   } else stop("W matrix is null")
 
   rho_sim <- rnorm(nrep,rho,se_rho)
