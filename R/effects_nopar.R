@@ -1,30 +1,36 @@
 #' @name eff_nopar
 #' @rdname eff_nopar
 #'
-#' @title Compute Total, Direct and Indirect effects functions 
-#'   for spatial or spatio-temporal semiparametric PS-SAR 
-#'   regression models.
+#' @title Compute Total, Direct and Indirect effect functions 
+#'   for continous non-parametric covariates in spatial or 
+#'   spatio-temporal semiparametric PS-SAR regression models.
 #'        
-#' @description Compute direct, indirect and total effects for 
+#' @description Compute direct, indirect and total effect functions for 
 #'   non-parametric covariates included in a semiparametric spatial
-#'   or spatio-temporal SAR model.         
+#'   or spatio-temporal SAR model. This model must include a spatial
+#'   lag of the dependent variable (SAR) to have indirect effects 
+#'   different from 0, otherwise, total and direct function effects 
+#'   are the same.         
 #'
-#' @param sptsarfit A \emph{psar} object fitted using \code{\link{psar}} function 
-#' @param variables A vector including names of non-parametric covariates.
-#' @param conflevel Numerical value for the confidence interval of the
+#' @param sptsarfit \emph{psar} object fitted using \code{\link{psar}} function 
+#' @param variables vector including names of non-parametric covariates.
+#' @param conflevel mumerical value for the confidence interval of the
 #'    effect functions. Default 0.95.
+#'
+#' @details DESCRIBE ALGORITHM TO COMPUTE EFFECT FUNCTIONS AND THE 
+#'          SMOOTHING TO PLOT        
 #'
 #' @return A list including
 #'   \tabular{ll}{
-#'     \code{effnopar_tot} \tab Matrix including total effects in columns. \cr
-#'     \code{effnopar_dir} \tab Matrix including direct effects in columns. \cr
-#'     \code{effnopar_ind} \tab Matrix including indirect effects in columns. \cr
-#'     \code{effnopar_tot_up} \tab Matrix including upper bounds of total effects in columns. \cr
-#'     \code{effnopar_dir_up} \tab Matrix including upper bounds of direct effects in columns. \cr
-#'     \code{effnopar_ind_up} \tab Matrix including upper bounds of indirect effects in columns. \cr
-#'     \code{effnopar_tot_low} \tab Matrix including lower bounds of total effects in columns. \cr
-#'     \code{effnopar_dir_low} \tab Matrix including lower bounds of direct effects in columns. \cr
-#'     \code{effnopar_ind_low} \tab Matrix including lower bounds of indirect effects in columns. \cr
+#'     \emph{effnopar_tot} \tab Matrix including total effects in columns. \cr
+#'     \emph{effnopar_dir} \tab Matrix including direct effects in columns. \cr
+#'     \emph{effnopar_ind} \tab Matrix including indirect effects in columns. \cr
+#'     \emph{effnopar_tot_up} \tab Matrix including upper bounds of total effects in columns. \cr
+#'     \emph{effnopar_dir_up} \tab Matrix including upper bounds of direct effects in columns. \cr
+#'     \emph{effnopar_ind_up} \tab Matrix including upper bounds of indirect effects in columns. \cr
+#'     \emph{effnopar_tot_low} \tab Matrix including lower bounds of total effects in columns. \cr
+#'     \emph{effnopar_dir_low} \tab Matrix including lower bounds of direct effects in columns. \cr
+#'     \emph{effnopar_ind_low} \tab Matrix including lower bounds of indirect effects in columns. \cr
 #'  }
 #'         
 #' @author Roman Minguez \email{roman.minguez@@uclm.es}
@@ -33,10 +39,12 @@
 #' \itemize{
 #'   \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
 #'   regression models.
-#'   \item \code{\link{eff_par}} compute total, direct and indirect effect
-#'                                functions for parametric continuous covariates.
+#'   \item \code{\link{eff_par}} compute and simulate total, direct and indirect effect
+#'                                (or impacts) for parametric continuous covariates.
 #'   \item \code{\link{fit_terms}} compute smooth functions for non-parametric
 #'                                 continuous covariates.
+#'   \item \code{\link{plot_effects_nopar}} plot the non-parametric effects
+#'                                          allowing for previous smoothing.
 #' }
 #' 
 #' @references \itemize{ 
