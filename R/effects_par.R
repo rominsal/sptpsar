@@ -2,9 +2,9 @@
 #' in spatio-temporal semiparametric regression models.
 
 #' @param sptsarfit An object of class \emph{psar} usually fitted using command
-#'                  \code{\link{psar}}
+#'                  \link{\code{psar}}
 
-
+#' @export
 eff_par <- function(sptsarfit,variables,
                     nrep=1000,seed=1111,
                     m=100,p=50,tol=0.01){
@@ -54,7 +54,6 @@ eff_par <- function(sptsarfit,variables,
   tot_eff <- dir_eff <- ind_eff <- NULL
   if(!is.null(seed)) set.seed(seed)
   if(!is.null(Wsp)){
-    #if(class(Wsp)=="CsparseMatrix") Wsp <- as(Wsp,"CsparseMatrix")
     trWsp <- spdep::trW(as(Wsp,"CsparseMatrix"),m=m,p=p,type="MC")
   } else stop("W matrix is null")
 

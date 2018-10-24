@@ -20,32 +20,40 @@ fit_pspl2d_sar <- function(y,vary_init,sp1=NULL,sp2=NULL,Xfull,Zfull,Wsp = NULL,
   X <- Matrix::Matrix(Xfull)
   if(!is.null(Zfull)){
     Z <- Matrix::Matrix(Zfull)
-  } else {
+  } else { # Parametric model without spatial trend...
     y <- as.matrix(y)
     X <- as.matrix(X)
-    if(sar){
+    if(sar){ # Use spdep to estimate...
       # Adjust dimensions of Wsp if nT>1
       nT <- nrow(X) / nrow(Wsp)
       I_T <- Matrix::Diagonal(nT)
       Wsp_full <- Wsp %x% I_T
       param_sar <- spdep::lagsarlm(formula = y ~ X - 1,
                                    listw=mat2listw(Wsp_full),type="lag")
-      res <- list(edfspt = NULL, edfnopar = NULL, edftot = edftot,
-                  tauspt = NULL, taunopar = taunopar,
+      vcov_full <- param_sar$resvar
+      vcov_bfixed <-  vcov_full[!rownames(vcov_full) %in% c("sigma","rho"),
+                                !colnames(vcov_full) %in% c("sigma","rho")]
+      #aic <- -2*llik + 2*edftot
+      #bic <- -2*llik + log(length(y))*edftot
+      # CALCULAR LLIK Y LLIKREML CON LA FÓRMULA...
+
+
+      res <- list(edfspt = NULL, edfnopar = NULL, edftot = parameters,
+                  tauspt = NULL, taunopar = NULL,
                   psanova = NULL, sar = sar,
-                  fitted.values = as.vector(fit),
-                  fit_Ay = as.vector(fit_Ay),
-                  se_fitted.values = as.vector(se_fit),
-                  se_fit_Ay = as.vector(se_fit_Ay),
-                  residuals = as.vector(residuals),
-                  sig2 = sig2u,
-                  rho = rho, se_rho = se_rho_an,
-                  se_rho_num = se_rho_num,
-                  bfixed = bfixed, brandom = brandom,
-                  se_bfixed = se_bfixed, se_brandom = se_brandom,
+                  fitted.values = param_sar$fitted.values,
+                  fit_Ay = NULL,
+                  se_fitted.values = param_sar$se.fit,
+                  se_fit_Ay = NULL,
+                  residuals = y - param_sar$fitted.values,
+                  sig2 = param_sar$s2,
+                  rho = param_sar$rho, se_rho = param_sar$rho.se,
+                  se_rho_num = param_sar$rho.se,
+                  bfixed = param_sar$coefficients, brandom = NULL,
+                  se_bfixed = param_sar$rest.se, se_brandom = NULL,
                   llik = llik, llik_reml = llik_reml,
                   aic = aic, bic = bic,
-                  vcov_b = cov1_eff,
+                  vcov_b = vcov_bfixed,
                   sp1 = sp1,sp2 = sp2, time = NULL)
 
       return(param_sar)
