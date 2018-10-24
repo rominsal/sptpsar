@@ -1,10 +1,3 @@
-#' Compute Direct, Indirect and Total effects for parametric covariates
-#' in spatio-temporal semiparametric regression models.
-
-#' @param sptsarfit An object of class \emph{psar} usually fitted using command
-#'                  \link{\code{psar}}
-
-#' @export
 eff_par <- function(sptsarfit,variables,
                     nrep=1000,seed=1111,
                     m=100,p=50,tol=0.01){

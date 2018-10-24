@@ -1,17 +1,17 @@
 #' @name psar
 #' @rdname psar
 #'
-#' @title Estimate geoadditive spatial or spatio-temporal semiparametric PS-SAR
-#' regression models.
+#' @title Estimate spatial or spatio-temporal semiparametric PS-SAR
+#'   regression models.
 #'
 #' @description Estimate geoadditive spatial or spatio-temporal semiparametric PS-SAR
-#' regression models including parametric and non-parametric covariates, spatial
-#' or spatio-temporal non-parametric trends and spatial lags. The non-parametric
-#' terms (either trends or covariates) are modelled using P-Splines. The
-#' non-parametric trend can be decomposed in an ANOVA way including main
-#' and interactions effects of 2nd and 3rd order. For the spatial
-#' lag a SAR model is specified. The estimation method
-#' is Restricted Maximum Likelihood (REML).
+#'   regression models including parametric and non-parametric covariates, spatial
+#'   or spatio-temporal non-parametric trends and spatial lags. The non-parametric
+#'   terms (either trends or covariates) are modelled using P-Splines. The
+#'   non-parametric trend can be decomposed in an ANOVA way including main
+#'   and interactions effects of 2nd and 3rd order. For the spatial
+#'   lag a SAR model is specified. The estimation method
+#'   is Restricted Maximum Likelihood (REML).
 #'
 #' @param formula A formula similar to GAM specification including
 #'   parametric and non-parametric terms. Parametric covariates
@@ -209,7 +209,7 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item \code{\link{eff__par}} compute total, direct and indirect effect
+#'   \item \code{\link{eff_par}} compute total, direct and indirect effect
 #'                                functions for parametric continuous covariates.
 #'   \item \code{\link{eff_nopar}} compute total, direct and indirect effect
 #'                                 functions for non-parametric continuous covariates.
@@ -219,36 +219,38 @@
 #'                                 of semiparametric models in \pkg{mgcv} package.
 #' }
 #'
-#' @references \itemize{ \item Basile, R., Durbán, M., Mínguez, R., Montero, J.
-#' M., and Mur, J. (2014). Modeling regional economic dynamics: Spatial
-#' dependence, spatial heterogeneity and nonlinearities. \emph{Journal of
-#' Economic Dynamics and Control}, (48), 229-245.
+#' @references \itemize{ 
+#'   \item Basile, R., Durbán, M., Mínguez, R., Montero, J. M., and 
+#'         Mur, J. (2014). Modeling regional economic dynamics: Spatial
+#'         dependence, spatial heterogeneity and nonlinearities. 
+#'         \emph{Journal of Economic Dynamics and Control}, (48), 229-245.
 #'
-#' \item Eilers, P. and Marx, B. (1996). Flexible Smoothing with B-Splines and
-#' Penalties. \emph{Statistical Science}, (11), 89-121.
+#'   \item Eilers, P. and Marx, B. (1996). Flexible Smoothing with 
+#'         B-Splines and Penalties. \emph{Statistical Science}, (11), 89-121.
 #'
-#' \item Lee, D. and Durbán, M. (2011). P-Spline ANOVA Type Interaction Models
-#' for Spatio-Temporal Smoothing. \emph{Statistical Modelling}, (11), 49-69.
+#'   \item Lee, D. and Durbán, M. (2011). P-Spline ANOVA Type Interaction 
+#'         Models for Spatio-Temporal Smoothing. \emph{Statistical Modelling}, (11), 49-69.
 #'
-#' \item Lee, D. J., Durban, M., and Eilers, P. (2013). Efficient
-#' two-dimensional smoothing with P-spline ANOVA mixed models and nested bases.
-#' \emph{Computational Statistics & Data Analysis}, (61), 22-37.
+#'   \item Lee, D. J., Durban, M., and Eilers, P. (2013). Efficient
+#'         two-dimensional smoothing with P-spline ANOVA mixed models 
+#'         and nested bases. \emph{Computational Statistics & Data 
+#'         Analysis}, (61), 22-37.
 #'
-#' \item LeSage, J. and Pace, K. (2009). \emph{Introduction to Spatial
-#' Econometrics}. CRC Press, Boca Raton.
+#'   \item LeSage, J. and Pace, K. (2009). \emph{Introduction to 
+#'         Spatial Econometrics}. CRC Press, Boca Raton.
 #'
-#' Mínguez, R.; Basile, R. and Durbán, M. (2018). An Alternative Semiparametric Model
-#' for Spatial Panel Data. Under evaluation
-#' in \emph{Regional Science and Urban Economics}.
+#'   \item Mínguez, R.; Basile, R. and Durbán, M. (2018). An Alternative Semiparametric Model
+#'         for Spatial Panel Data. Under evaluation in \emph{Statistical
+#'         Methods and Applications}.
 #'
-#' \item Montero, J., Mínguez, R., and Durbán, M. (2012). SAR models with
-#' nonparametric spatial trends: A P-Spline approach. \emph{Estadística
-#' Española}, (54:177), 89-111.
+#'   \item Montero, J., Mínguez, R., and Durbán, M. (2012). SAR models 
+#'         with nonparametric spatial trends: A P-Spline approach. 
+#'         \emph{Estadística Española}, (54:177), 89-111.
 #'
-#' \item Rodríguez-Alvarez, M. X.; Kneib, T.; Durban, M.; Lee, D.J.
-#' and Eilers, P. (2015). Fast smoothing parameter separation in
-#' multidimensional generalized P-splines: the SAP algorithm.
-#' \emph{Statistics and Computing} 25 (5), 941-957.
+#'   \item Rodríguez-Alvarez, M. X.; Kneib, T.; Durban, M.; Lee, D.J.
+#'         and Eilers, P. (2015). Fast smoothing parameter separation 
+#'         in multidimensional generalized P-splines: the SAP algorithm.
+#'         \emph{Statistics and Computing} 25 (5), 941-957.
 #' }
 #'
 #' @examples
@@ -397,7 +399,7 @@
 #'                    nest_sp1=c(1,2,3),nest_sp2=c(1,2,3),
 #'                    nest_time=c(1,2,2),ntime=19)
 #'  sptanova <- psar(form4,data=unemp_it,
-#'                   control=list(thr=1e-2,maxit=200,trace=TRUE))
+#'                   control=list(thr=1e-2,maxit=200,trace=FALSE))
 #'  summary(sptanova)
 #'  ### Plot spatial trend (ANOVA)
 #'  spttrend <- fit_terms(sptanova,"spttrend")
@@ -408,12 +410,12 @@
 #'
 #'  ### Spatio-temporal semiparametric ANOVA model with spatial lag
 #'  sptanova_sar <- psar(form4,data=unemp_it,Wsp=Wsp_it,sar=TRUE,
-#'                       control=list(thr=1e-1,maxit=100,trace=TRUE))
+#'                       control=list(thr=1e-1,maxit=100,trace=FALSE))
 #'  summary(sptanova_sar)
 #'  ### Spatio-temporal semiparametric ANOVA model with spatial lag
 #'  ### and temporal autorregresive noise
 #'  sptanova_sar_ar1 <- psar(form4,data=unemp_it,Wsp=Wsp_it,sar=TRUE,ar1=TRUE,
-#'                     control=list(thr=1e-1,maxit=200,trace=TRUE))
+#'                     control=list(thr=1e-1,maxit=200,trace=FALSE))
 #'  summary(sptanova_sar_ar1)
 #'  ###### Non-Parametric Total, Direct and Indirect Effects
 #'  list_varnopar <- c("serv","empgrowth")

@@ -2,7 +2,6 @@
 % Please edit documentation in R/effects.R, R/effects_nopar.R
 \name{eff_nopar}
 \alias{eff_nopar}
-\alias{eff_nopar}
 \title{Compute Total, Direct and Indirect effects functions for  geoadditive
 spatial or spatio-temporal semiparametric PS-SAR regression models.}
 \usage{
@@ -11,8 +10,12 @@ eff_nopar(sptsarfit, variables, conflevel = 0.95)
 eff_nopar(sptsarfit, variables, conflevel = 0.95)
 }
 \arguments{
+\item{sptsarfit}{A \emph{psar} object fitted using \code{\link{psar}} function}
+
+\item{variables}{A vector including names of non-parametric covariates.}
+
 \item{conflevel}{Numerical value for the confidence interval of the
-effect functions.}
+effect functions. Default 0.95.}
 
 \item{fitted_nopar}{A matrix including the non-parametric fitted
 functions (GAM) for each covariate.}
@@ -32,27 +35,113 @@ of each covariate (either parametric or non-parametric). Default FALSE.}
 
 \item{conf_level}{Numerical value for the confidence interval of the
 effect functions.}
-
-\item{fitted_nopar}{A matrix including the non-parametric fitted
-functions (GAM) for each covariate.}
-
-\item{sd_fitted_nopar}{A matrix including the standard deviations of
-non-parametric functions(GAM) for each convariate.}
-
-\item{Wsp}{A neighbour spatial matrix.
-The dimension of the matrix is always \emph{nxn}, where \emph{n} is the
-dimension of each spatial coordinate. Default NULL.}
-
-\item{rho}{Spatial parameter of the spatial lag of the dependent
-variable for SAR models. Default 0.}
-
-\item{durbin}{A logical value indicating if the model include a spatial lag
-of each covariate (either parametric or non-parametric). Default FALSE.}
+}
+\value{
+A list including
+  \tabular{ll}{
+    \code{effnopar_tot} \tab Matrix including total effects in columns. \cr
+    \code{effnopar_dir} \tab Matrix including direct effects in columns. \cr
+    \code{effnopar_ind} \tab Matrix including indirect effects in columns. \cr
+    \code{effnopar_tot_up} \tab Matrix including upper bounds of total effects in columns. \cr
+    \code{effnopar_dir_up} \tab Matrix including upper bounds of direct effects in columns. \cr
+    \code{effnopar_ind_up} \tab Matrix including upper bounds of indirect effects in columns. \cr
+    \code{effnopar_tot_low} \tab Matrix including lower bounds of total effects in columns. \cr
+    \code{effnopar_dir_low} \tab Matrix including lower bounds of direct effects in columns. \cr
+    \code{effnopar_ind_low} \tab Matrix including lower bounds of indirect effects in columns. \cr
+ }
 }
 \description{
 Compute effects function for non-parametric covariates in semiparametric
 models.
 
-Compute effects function for non-parametric covariates in semiparametric
-models.
+Compute direct, indirect and total effects for 
+  non-parametric covariates included in a semiparametric spatial
+  or spatio-temporal SAR model.
 }
+\examples{
+################################################
+ ###################### Examples using a panel data of rate of
+ ###################### unemployment for 103 Italian provinces in period 1996-2014.
+library(sptpsar)
+data(unemp_it); Wsp <- Wsp_it
+
+######################  No Spatial Trend: PSAR including a spatial 
+######################  lag of the dependent variable
+ gamsar <- psar(form1,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
+ summary(gamsar)
+form1 <- unrate ~ partrate + agri + cons +
+                 pspl(serv,nknots=15) +
+                 pspl(empgrowth,nknots=20) 
+ ###### Non-Parametric Total, Direct and Indirect Effects
+ list_varnopar <- c("serv","empgrowth")
+ eff_nparvar <- eff_nopar(gamsar,list_varnopar)
+ plot_effects_nopar(eff_nparvar,unemp_it,smooth=TRUE)
+ plot_effects_nopar(eff_nparvar,unemp_it,smooth=FALSE)
+ 
+######################   PSAR-ANOVA with spatial trend
+form2 <- unrate ~ partrate + agri + cons +
+                  pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+                  pspt(long,lat,nknots=c(20,20),psanova=TRUE,
+                  nest_sp1=c(1,2),nest_sp2=c(1,2))
+##### Spatial trend fixed for period 1996-2014
+geospanova_sar <- psar(form2,data=unemp_it,Wsp=Wsp_it,sar=TRUE,
+                   control=list(thr=1e-1,maxit=200,trace=FALSE))
+summary(geospanova_sar)
+ ###### Non-Parametric Total, Direct and Indirect Effects
+ list_varnopar <- c("serv","empgrowth")
+ eff_nparvar <- eff_nopar(geospanova_sar,list_varnopar)
+ plot_effects_nopar(eff_nparvar,unemp_it,smooth=TRUE)
+ plot_effects_nopar(eff_nparvar,unemp_it,smooth=FALSE)
+ 
+######################   PSAR-ANOVA with spatio-temporal trend and 
+######################   temporal autorregresive noise
+ form3 <- unrate ~ partrate + agri + cons +
+                   pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+                   pspt(long,lat,year,nknots=c(18,18,8),psanova=TRUE,
+                   nest_sp1=c(1,2,3),nest_sp2=c(1,2,3),
+                   nest_time=c(1,2,2),ntime=19)
+sptanova_sar_ar1 <- psar(form3,data=unemp_it,Wsp=Wsp_it,sar=TRUE,ar1=TRUE,
+                    control=list(thr=1e-1,maxit=200,trace=FALSE))
+summary(sptanova_sar_ar1)
+ ###### Non-Parametric Total, Direct and Indirect Effects
+ list_varnopar <- c("serv","empgrowth")
+ eff_nparvar <- eff_nopar(sptanova_sar_ar1,list_varnopar)
+ plot_effects_nopar(eff_nparvar,unemp_it,smooth=TRUE)
+ plot_effects_nopar(eff_nparvar,unemp_it,smooth=FALSE)
+
+}
+\references{
+\itemize{ 
+  \item Basile, R., Durbán, M., Mínguez, R., Montero, J.
+        M., and Mur, J. (2014). Modeling regional economic 
+        dynamics: Spatial dependence, spatial heterogeneity and 
+        nonlinearities. \emph{Journal of Economic Dynamics and 
+        Control}, (48), 229-245.
+        
+  \item LeSage, J. and Pace, K. (2009). \emph{Introduction to 
+        Spatial Econometrics}. CRC Press, Boca Raton.
+        
+  \item Mínguez, R.; Basile, R. and Durbán, M. (2018). An Alternative Semiparametric Model
+        for Spatial Panel Data. Under evaluation in \emph{Statistical
+        Methods and Applications}.
+ }
+}
+\seealso{
+\itemize{
+  \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
+  regression models.
+  \item \code{\link{eff_par}} compute total, direct and indirect effect
+                               functions for parametric continuous covariates.
+  \item \code{\link{fit_terms}} compute smooth functions for non-parametric
+                                continuous covariates.
+}
+}
+\author{
+Roman Minguez \email{roman.minguez@uclm.es}
+}
+\keyword{Direct}
+\keyword{Indirect}
+\keyword{SAR,}
+\keyword{covariates.}
+\keyword{effects,}
+\keyword{non-parametric}

@@ -24,7 +24,7 @@ LinkingTo: Rcpp, RcppEigen
 Suggests:
     knitr,
     rmarkdown
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 VignetteBuilder: knitr
 RdMacros: Rdpack
 URL: http://github.com/rominsal/sptpsar
