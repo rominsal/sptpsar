@@ -1,7 +1,7 @@
 #' @name eff_nopar
 #' @rdname eff_nopar
 #'
-#' @title Compute Total, Direct and Indirect effect functions 
+#' @title Compute direct, indirect and total effect functions 
 #'   for continous non-parametric covariates in spatial or 
 #'   spatio-temporal semiparametric PS-SAR regression models.
 #'        
@@ -43,7 +43,7 @@
 #'                                (or impacts) for parametric continuous covariates.
 #'   \item \code{\link{fit_terms}} compute smooth functions for non-parametric
 #'                                 continuous covariates.
-#'   \item \code{\link{plot_effects_nopar}} plot the non-parametric effects
+#'   \item \code{\link{plot_effects_nopar}} plot the non-parametric effects functions
 #'                                          allowing for previous smoothing.
 #' }
 #' 
@@ -71,11 +71,11 @@
 #' 
 #' ######################  No Spatial Trend: PSAR including a spatial 
 #' ######################  lag of the dependent variable
-#'  gamsar <- psar(form1,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
-#'  summary(gamsar)
 #' form1 <- unrate ~ partrate + agri + cons +
 #'                  pspl(serv,nknots=15) +
 #'                  pspl(empgrowth,nknots=20) 
+#'  gamsar <- psar(form1,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
+#'  summary(gamsar)
 #'  ###### Non-Parametric Total, Direct and Indirect Effects
 #'  list_varnopar <- c("serv","empgrowth")
 #'  eff_nparvar <- eff_nopar(gamsar,list_varnopar)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/effects_par.R
 \name{eff_par}
 \alias{eff_par}
-\title{Compute Total, Direct and Indirect effects (or impacts)
+\title{Compute direct, indirect and total effects (or impacts)
   for continous parametric covariates in spatial or 
   spatio-temporal semiparametric PS-SAR regression models.}
 \usage{

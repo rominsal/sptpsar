@@ -1,8 +1,55 @@
+#' @name eff_nopar
+#' @rdname eff_nopar
+#'
+#' @title Compute fitted functions (named \emph{terms}) for continous 
+#'        non-parametric covariates in spatial or 
+#'        spatio-temporal semiparametric PS-SAR regression models.
+#'        
+#' @description CONTINUAR AQUÍ      
+#'        
+#' @param sptsarfit \emph{psar} object fitted using \code{\link{psar}} function 
+#' @param variables vector including names of non-parametric covariates.
+#'
+#' @return CONTINUAR AQUÍ
+#' 
+#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
+#'           regression models.
+#'   \item \code{\link{eff_nopar}} compute total, direct and indirect effect
+#'           functions for non-parametric continuous covariates.
+#'   \item \code{\link{plot_terms}} plot the fitted terms.
+#' }
+#' 
+#' @references \itemize{ 
+#'   \item Wood, S.N. (2017). \emph{Generalized Additive Models. 
+#'   An Introduction with \code{R}} (second edition). CRC Press, Boca Raton.
+#'  }       
+#'#' @examples
+#' ################################################
+#'  ###################### Examples using a panel data of rate of
+#'  ###################### unemployment for 103 Italian provinces in period 1996-2014.
+#' library(sptpsar)
+#' data(unemp_it); Wsp <- Wsp_it
+#' ######################  No Spatial Trend: PSAR including a spatial 
+#' ######################  lag of the dependent variable
+#' form1 <- unrate ~ partrate + agri + cons +
+#'                  pspl(serv,nknots=15) +
+#'                  pspl(empgrowth,nknots=20) 
+#'  gamsar <- psar(form1,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
+#'  summary(gamsar)
+#'  ######################  Fit non-parametric terms (spatial trend must be name "spttrend")
+#'  list_varnopar <- c("serv","empgrowth")
+#'  terms_nopar <- fit_terms(gamsar,list_varnopar)
+#'  ######################  Plot non-parametric terms
+#'  plot_terms(terms_nopar,unemp_it)
+#'  
+#'  @export
+
+
 fit_terms <- function(sptsarfit,variables){
-  # Function to get fitted values of each variable
-  # Inputs:
-    # sptsarfit: Object of class psar fitted
-    # variables: Vector of character including variables names
   X <- sptsarfit$X
   Z <- sptsarfit$Z
   mt <- sptsarfit$terms
@@ -19,9 +66,6 @@ fit_terms <- function(sptsarfit,variables){
   cov_b_random <- cov_b[row_cov_random,col_cov_random]
   fitted_terms_fixed <- fitted_terms_random <- fitted_terms <- NULL
   se_fitted_terms <- se_fitted_terms_fixed <- se_fitted_terms_random <- NULL
-  # var_fitted_terms <- list()
-  # var_fitted_terms_fixed <- list()
-  # var_fitted_terms_random <- list()
   for (i in 1:length(variables)) {
     var_name <- variables[i]
     if (grepl("spttrend",var_name)) {
@@ -44,28 +88,28 @@ fit_terms <- function(sptsarfit,variables){
            term_j <- term_fixed_j + term_random_j
            names(term_fixed_j) <- names(term_random_j) <- eff_spttrend_psanova_j
            names(term_j) <- eff_spttrend_psanova_j
-           fitted_terms_fixed <- Matrix::cBind(term_fixed_j, fitted_terms_fixed)
-           fitted_terms_random <- Matrix::cBind(term_random_j, fitted_terms_random)
-           fitted_terms <- Matrix::cBind(term_j, fitted_terms)
+           fitted_terms_fixed <- cbind(term_fixed_j, fitted_terms_fixed)
+           fitted_terms_random <- cbind(term_random_j, fitted_terms_random)
+           fitted_terms <- cbind(term_j, fitted_terms)
            colnames(fitted_terms_fixed)[1] <- eff_spttrend_psanova_j
            colnames(fitted_terms_random)[1] <- eff_spttrend_psanova_j
            colnames(fitted_terms)[1] <- eff_spttrend_psanova_j
            row_cov_j <- c(grepl(eff_spttrend_psanova_j,rownames(cov_b)))
            col_cov_j <- c(grepl(eff_spttrend_psanova_j,colnames(cov_b)))
            cov_b_j <- cov_b[row_cov_j,col_cov_j]
-           se_term_j <- Matrix::rowSums( (Matrix::cBind(Xj,Zj) %*% cov_b_j)
-                                        * Matrix::cBind(Xj,Zj) )^0.5
-           se_fitted_terms <- Matrix::cBind(se_term_j,se_fitted_terms)
+           se_term_j <- Matrix::rowSums( (cbind(Xj,Zj) %*% cov_b_j)
+                                        * cbind(Xj,Zj) )^0.5
+           se_fitted_terms <- cbind(se_term_j,se_fitted_terms)
            colnames(se_fitted_terms)[1] <- eff_spttrend_psanova_j
-           #var_fitted_terms[[j]] <- Matrix::cBind(Xj,Zj) %*%
-           #                          (cov_b_j %*% Matrix::t(Matrix::cBind(Xj,Zj)))
+           #var_fitted_terms[[j]] <- cbind(Xj,Zj) %*%
+           #                          (cov_b_j %*% Matrix::t(cbind(Xj,Zj)))
            #names(var_fitted_terms)[j] <- eff_spttrend_psanova_j
            row_cov_j_fixed <- c(grepl(eff_spttrend_psanova_j,rownames(cov_b_fixed)))
            col_cov_j_fixed <- c(grepl(eff_spttrend_psanova_j,colnames(cov_b_fixed)))
            cov_b_j_fixed <- cov_b_fixed[row_cov_j_fixed,col_cov_j_fixed]
            se_term_j_fixed <- Matrix::rowSums( (Xj %*% cov_b_j_fixed)
                                                * Xj )^0.5
-           se_fitted_terms_fixed <- Matrix::cBind(se_term_j_fixed,
+           se_fitted_terms_fixed <- cbind(se_term_j_fixed,
                                           se_fitted_terms_fixed)
            colnames(se_fitted_terms_fixed)[1] <- eff_spttrend_psanova_j
            #var_fitted_terms_fixed[[j]] <- Xj %*% cov_b_j_fixed %*% t(Xj)
@@ -76,7 +120,7 @@ fit_terms <- function(sptsarfit,variables){
            cov_b_j_random <- cov_b_random[row_cov_j_random,col_cov_j_random]
            se_term_j_random <- Matrix::rowSums( (Zj %*% cov_b_j_random)
                                                * Zj )^0.5
-           se_fitted_terms_random <- Matrix::cBind(se_term_j_random,
+           se_fitted_terms_random <- cbind(se_term_j_random,
                                           se_fitted_terms_random)
            colnames(se_fitted_terms_random)[1] <- eff_spttrend_psanova_j
            #var_fitted_terms_random[[j]] <- Zj %*% cov_b_j_random %*% t(Zj)
@@ -103,11 +147,11 @@ fit_terms <- function(sptsarfit,variables){
          fitted_term_random_spt <- Z_spt %*% brandom_spt
          fitted_term_spt <- fitted_term_fixed_spt + fitted_term_random_spt
 
-         fitted_terms_fixed <- Matrix::cBind(fitted_term_fixed_spt,
+         fitted_terms_fixed <- cbind(fitted_term_fixed_spt,
                                      fitted_terms_fixed)
-         fitted_terms_random <- Matrix::cBind(fitted_term_random_spt,
+         fitted_terms_random <- cbind(fitted_term_random_spt,
                                       fitted_terms_random)
-         fitted_terms <- Matrix::cBind(fitted_term_spt, fitted_terms)
+         fitted_terms <- cbind(fitted_term_spt, fitted_terms)
          colnames(fitted_terms_fixed)[1] <- "spttrend"
          colnames(fitted_terms_random)[1] <- "spttrend"
          colnames(fitted_terms)[1] <- "spttrend"
@@ -115,20 +159,20 @@ fit_terms <- function(sptsarfit,variables){
                                      collapse="|"),
                                colnames(cov_b), value=TRUE))
          cov_b_spt <- cov_b[match_cov_bspt,match_cov_bspt]
-         se_term_spt <- Matrix::rowSums( (Matrix::cBind(X_spt,Z_spt) %*% cov_b_spt)
-                                        * Matrix::cBind(X_spt,Z_spt) )^0.5
-         se_fitted_terms <- Matrix::cBind(se_term_spt,
+         se_term_spt <- Matrix::rowSums( (cbind(X_spt,Z_spt) %*% cov_b_spt)
+                                        * cbind(X_spt,Z_spt) )^0.5
+         se_fitted_terms <- cbind(se_term_spt,
                                   se_fitted_terms)
          colnames(se_fitted_terms)[1] <- "spttrend"
-         # var_fitted_terms$spttrend <- Matrix::cBind(X_spt,Z_spt) %*%
-         #  (cov_b_spt %*% Matrix::t(Matrix::cBind(X_spt,Z_spt)))
+         # var_fitted_terms$spttrend <- cbind(X_spt,Z_spt) %*%
+         #  (cov_b_spt %*% Matrix::t(cbind(X_spt,Z_spt)))
          match_cov_bspt_fixed <- unique(grep(paste(eff_spttrend_psanova,
                                              collapse="|"),
                                        colnames(cov_b_fixed), value=TRUE))
          cov_b_spt_fixed <- cov_b[match_cov_bspt_fixed,match_cov_bspt_fixed]
          se_term_spt_fixed <- Matrix::rowSums( (X_spt %*% cov_b_spt_fixed)
                                               * X_spt )^0.5
-         se_fitted_terms_fixed <- Matrix::cBind(se_term_spt_fixed,
+         se_fitted_terms_fixed <- cbind(se_term_spt_fixed,
                                         se_fitted_terms_fixed)
          colnames(se_fitted_terms_fixed)[1] <- "spttrend"
          #var_fitted_terms_fixed$spttrend <- X_spt %*% cov_b_spt_fixed %*% t(X_spt)
@@ -138,7 +182,7 @@ fit_terms <- function(sptsarfit,variables){
          cov_b_spt_random <- cov_b[match_cov_bspt_random,match_cov_bspt_random]
          se_term_spt_random <- Matrix::rowSums( (Z_spt %*% cov_b_spt_random)
                                                * Z_spt )^0.5
-         se_fitted_terms_random <- Matrix::cBind(se_term_spt_random,
+         se_fitted_terms_random <- cbind(se_term_spt_random,
                                          se_fitted_terms_random)
          colnames(se_fitted_terms_random)[1] <- "spttrend"
          #var_fitted_terms_random$spttrend <- Z_spt %*% cov_b_spt_random %*% t(Z_spt)
@@ -150,29 +194,29 @@ fit_terms <- function(sptsarfit,variables){
         term_fixed_i <- Xi %*% bfixed_i
         term_random_i <- Zi %*% brandom_i
         term_i <- term_fixed_i + term_random_i
-        fitted_terms_fixed <- Matrix::cBind(term_fixed_i,fitted_terms_fixed)
-        fitted_terms_random <- Matrix::cBind(term_random_i, fitted_terms_random)
-        fitted_terms <- Matrix::cBind(term_i,fitted_terms)
+        fitted_terms_fixed <- cbind(term_fixed_i,fitted_terms_fixed)
+        fitted_terms_random <- cbind(term_random_i, fitted_terms_random)
+        fitted_terms <- cbind(term_i,fitted_terms)
         colnames(fitted_terms_fixed)[1] <- "spttrend"
         colnames(fitted_terms_random)[1] <- "spttrend"
         colnames(fitted_terms)[1] <- "spttrend"
         row_cov_i <- c(grepl("spt",rownames(cov_b)))
         col_cov_i <- c(grepl("spt",colnames(cov_b)))
         cov_b_i <- cov_b[row_cov_i,col_cov_i]
-        se_term_i <- Matrix::rowSums( (Matrix::cBind(Xi,Zi) %*% cov_b_i)
-                                     * Matrix::cBind(Xi,Zi) )^0.5
-        se_fitted_terms <- Matrix::cBind(se_term_i,
+        se_term_i <- Matrix::rowSums( (cbind(Xi,Zi) %*% cov_b_i)
+                                     * cbind(Xi,Zi) )^0.5
+        se_fitted_terms <- cbind(se_term_i,
                                  se_fitted_terms)
         colnames(se_fitted_terms)[1] <- "spttrend"
-        #var_fitted_terms[[i]] <- Matrix::cBind(Xi,Zi) %*%
-        #                         (cov_b_i %*% t(Matrix::cBind(Xi,Zi)))
+        #var_fitted_terms[[i]] <- cbind(Xi,Zi) %*%
+        #                         (cov_b_i %*% t(cbind(Xi,Zi)))
         #names(var_fitted_terms)[i] <- "spttrend"
         row_cov_i_fixed <- c(grepl("spt",rownames(cov_b_fixed)))
         col_cov_i_fixed <- c(grepl("spt",colnames(cov_b_fixed)))
         cov_b_i_fixed <- cov_b_fixed[row_cov_i_fixed,col_cov_i_fixed]
         se_term_i_fixed <- Matrix::rowSums( (Xi %*% cov_b_i_fixed)
                                            * Xi )^0.5
-        se_fitted_terms_fixed <- Matrix::cBind(se_term_i_fixed,
+        se_fitted_terms_fixed <- cbind(se_term_i_fixed,
                                        se_fitted_terms_fixed)
         colnames(se_fitted_terms_fixed)[1] <- "spttrend"
         # var_fitted_terms_fixed[[i]] <- Xi %*% cov_b_i_fixed %*% t(Xi)
@@ -183,7 +227,7 @@ fit_terms <- function(sptsarfit,variables){
         cov_b_i_random <- cov_b_random[row_cov_i_random,col_cov_i_random]
         se_term_i_random <- Matrix::rowSums( (Zi %*% cov_b_i_random)
                                             * Zi )^0.5
-        se_fitted_terms_random <- Matrix::cBind(se_term_i_random,
+        se_fitted_terms_random <- cbind(se_term_i_random,
                                        se_fitted_terms_random)
         colnames(se_fitted_terms_random)[1] <- "spttrend"
         # var_fitted_terms_random[[i]] <- Zi %*% cov_b_i_random %*% t(Zi)
@@ -198,28 +242,28 @@ fit_terms <- function(sptsarfit,variables){
       term_fixed_i <- Xi %*% bfixed_i
       term_random_i <- Zi %*% brandom_i
       term_i <- term_fixed_i + term_random_i
-      fitted_terms_fixed <- Matrix::cBind(term_fixed_i,fitted_terms_fixed)
-      fitted_terms_random <- Matrix::cBind(term_random_i, fitted_terms_random)
-      fitted_terms <- Matrix::cBind(term_i,fitted_terms)
+      fitted_terms_fixed <- cbind(term_fixed_i,fitted_terms_fixed)
+      fitted_terms_random <- cbind(term_random_i, fitted_terms_random)
+      fitted_terms <- cbind(term_i,fitted_terms)
       colnames(fitted_terms_fixed)[1] <- var_name
       colnames(fitted_terms_random)[1] <- var_name
       colnames(fitted_terms)[1] <- var_name
       row_cov_i <- c(grepl(var_name,rownames(cov_b)))
       col_cov_i <- c(grepl(var_name,colnames(cov_b)))
       cov_b_i <- cov_b[row_cov_i,col_cov_i]
-      se_term_i <- Matrix::rowSums( (Matrix::cBind(Xi,Zi) %*% cov_b_i)
-                                    * Matrix::cBind(Xi,Zi) )^0.5
-      se_fitted_terms <- Matrix::cBind(se_term_i,se_fitted_terms)
+      se_term_i <- Matrix::rowSums( (cbind(Xi,Zi) %*% cov_b_i)
+                                    * cbind(Xi,Zi) )^0.5
+      se_fitted_terms <- cbind(se_term_i,se_fitted_terms)
       colnames(se_fitted_terms)[1] <- var_name
-      # var_fitted_terms[[i]] <- Matrix::cBind(Xi,Zi) %*%
-      #                          (cov_b_i %*% t(Matrix::cBind(Xi,Zi)))
+      # var_fitted_terms[[i]] <- cbind(Xi,Zi) %*%
+      #                          (cov_b_i %*% t(cbind(Xi,Zi)))
       # names(var_fitted_terms)[i] <- var_name
       row_cov_i_fixed <- c(grepl(var_name,rownames(cov_b_fixed)))
       col_cov_i_fixed <- c(grepl(var_name,colnames(cov_b_fixed)))
       cov_b_i_fixed <- cov_b_fixed[c(row_cov_i_fixed),c(col_cov_i_fixed)]
       se_term_i_fixed <- Matrix::rowSums( (Xi %*% cov_b_i_fixed)
                                           * Xi )^0.5
-      se_fitted_terms_fixed <- Matrix::cBind(se_term_i_fixed,
+      se_fitted_terms_fixed <- cbind(se_term_i_fixed,
                                      se_fitted_terms_fixed)
       colnames(se_fitted_terms_fixed)[1] <- var_name
       # var_fitted_terms_fixed[[i]] <- Xi %*% cov_b_i_fixed %*% t(Xi)
@@ -230,7 +274,7 @@ fit_terms <- function(sptsarfit,variables){
       cov_b_i_random <- cov_b_random[row_cov_i_random,col_cov_i_random]
       se_term_i_random <- Matrix::rowSums( (Zi %*% cov_b_i_random)
                                            * Zi )^0.5
-      se_fitted_terms_random <- Matrix::cBind(se_term_i_random,
+      se_fitted_terms_random <- cbind(se_term_i_random,
                                       se_fitted_terms_random)
       colnames(se_fitted_terms_random)[1] <- var_name
       # var_fitted_terms_random[[i]] <- Zi %*% cov_b_i_random %*% t(Zi)
