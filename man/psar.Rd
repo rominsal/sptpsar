@@ -6,9 +6,8 @@
   regression models.}
 \usage{
 psar(formula, data, Wsp = NULL, sar = FALSE, ar1 = FALSE,
-  control = list(vary_init = NULL, thr = 0.001, maxit = 200, trace =
-  FALSE, rho_init = 0, phi_init = 0, rho_fixed = FALSE, phi_fixed = FALSE),
-  ...)
+  control = list(vary_init = NULL, thr = 0.001, maxit = 200, trace = FALSE,
+  rho_init = 0, phi_init = 0, rho_fixed = FALSE, phi_fixed = FALSE), ...)
 }
 \arguments{
 \item{formula}{A formula similar to GAM specification including

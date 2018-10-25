@@ -6,8 +6,8 @@
   for continous parametric covariates in spatial or 
   spatio-temporal semiparametric PS-SAR regression models.}
 \usage{
-eff_par(sptsarfit, variables, nrep = 1000, seed = 1111, m = 100,
-  p = 50, tol = 0.01)
+eff_par(sptsarfit, variables, nrep = 1000, seed = 1111, m = 100, p = 50,
+  tol = 0.01)
 }
 \arguments{
 \item{sptsarfit}{A \emph{psar} object fitted using \code{\link{psar}} function}
