@@ -1,33 +1,59 @@
-#' @name eff_nopar
-#' @rdname eff_nopar
+#' @name fit_terms
+#' @rdname fit_terms
 #'
-#' @title Compute fitted functions (named \emph{terms}) for continous 
-#'        non-parametric covariates in spatial or 
-#'        spatio-temporal semiparametric PS-SAR regression models.
+#' @title Compute terms for non-parametric spatial (2d) or 
+#'   spatio-temporal (3d) trends and for smooth functions of continous 
+#'   non-parametric covariates in PS-SAR regression models.
 #'        
-#' @description CONTINUAR AQUÍ      
+#' @description The \code{fit_terms} function compute both:
+#' \itemize{
+#'   \item Non-parametric spatial (2d) or spatio-temporal (3d) trends 
+#'     including the decomposition in main and interaction trends 
+#'     when the model is ANOVA.
+#'     \item Smooth functions \eqn{f(x_i)} for non-parametric covariates 
+#'       in semiparametric models. It also includes standard errors and the decomposition of each non-parametric
+#'       term in fixed and random parts.
+#' }
 #'        
-#' @param sptsarfit \emph{psar} object fitted using \code{\link{psar}} function 
-#' @param variables vector including names of non-parametric covariates.
-#'
-#' @return CONTINUAR AQUÍ
-#' 
-#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#' @param sptsarfit \emph{psar} object fitted using \code{\link{psar}} function. 
+#' @param variables vector including names of non-parametric covariates. 
+#'   To fit the terms of non-parametric spatial (2d) or spatio-temporal (3d) trend
+#'   this argument must be set equal to \emph{spttrend}. 
+#'   
+#' @return A list including:
+#'   \tabular{ll}{
+#'     \emph{fitted_terms} \tab Matrix including terms in columns. \cr
+#'     \emph{se_fitted_terms} \tab Matrix including standard errors of terms in columns. \cr
+#'     \emph{fitted_terms_fixed} \tab Matrix including fixed part of terms in columns. \cr
+#'     \emph{se_fitted_terms_fixed} \tab Matrix including standard errors of fixed part of terms in columns. \cr
+#'     \emph{fitted_terms_random} \tab Matrix including random part of terms in columns. \cr
+#'     \emph{se_fitted_terms_random} \tab Matrix including standard errors of random part of terms in columns.\cr
+#'  }
+#'  This object can be used as an argument of \code{\link{plot_terms}} function
+#'  to make plots of both non-parametric trends and smooth functions of covariates.
+#'  See \emph{examples} below. 
+#'  
+#' @author Roman Minguez \email{roman.minguez@@uclm.es} #'
 #'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
 #'           regression models.
-#'   \item \code{\link{eff_nopar}} compute total, direct and indirect effect
-#'           functions for non-parametric continuous covariates.
-#'   \item \code{\link{plot_terms}} plot the fitted terms.
+#'   \item \code{\link{plot_terms}} plot smooth functions of non-parametric
+#'     covariates.
+#'   \item \code{\link{plot_main_spt}} plot main non-parametric functions in
+#'     ANOVA trends.
 #' }
 #' 
 #' @references \itemize{ 
+#'  \item Lee, D. and Durbán, M. (2011). P-Spline ANOVA Type Interaction 
+#'         Models for Spatio-Temporal Smoothing. \emph{Statistical Modelling}, (11), 49-69.
+#'         
 #'   \item Wood, S.N. (2017). \emph{Generalized Additive Models. 
 #'   An Introduction with \code{R}} (second edition). CRC Press, Boca Raton.
-#'  }       
-#'#' @examples
+#'  } 
+#'        
+#' @examples
 #' ################################################
 #'  ###################### Examples using a panel data of rate of
 #'  ###################### unemployment for 103 Italian provinces in period 1996-2014.
@@ -46,8 +72,48 @@
 #'  ######################  Plot non-parametric terms
 #'  plot_terms(terms_nopar,unemp_it)
 #'  
+#'  ###############################################
+#'  Examples of terms corresponding to spatial (2d) or 
+#'             spatio-temporal (3d) trends
+#'  ###############################################
+#'  
+#'  # Spatial (2d) semiparametric ANOVA model without spatial lag
+#'  # Interaction term f12 with nested basis
+#' form3 <- unrate ~ partrate + agri + cons +
+#'                   pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+#'                   pspt(long,lat,nknots=c(20,20),psanova=TRUE,
+#'                   nest_sp1=c(1,2),nest_sp2=c(1,2))
+#' # Spatial trend fixed for period 1996-2014
+#' geospanova <- psar(form3,data=unemp_it)
+#' summary(geospanova)
+#' ### Plot spatial trend (ANOVA)
+#' spttrend <- fit_terms(geospanova,"spttrend")
+#' lon <- scale(unemp_it$long); lat <- scale(unemp_it$lat)
+#' ### Plot main effects
+#' plot_main_spt(spttrend,sp1=lon,sp2=lat,nT=19)
+#' 
+#' #'  ###############################################
+#'  # Spatio-temporal (3d) semiparametric ANOVA model without spatial lag
+#'  # Interaction terms f12,f1t,f2t and f12t with nested basis
+#'  # Remark: It is necessary to include ntime as argument
+#'  # Remark: nest_sp1, nest_sp2 and nest_time must be divisors of nknots
+#'  form4 <- unrate ~ partrate + agri + cons +
+#'                    pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+#'                    pspt(long,lat,year,nknots=c(18,18,8),psanova=TRUE,
+#'                    nest_sp1=c(1,2,3),nest_sp2=c(1,2,3),
+#'                    nest_time=c(1,2,2),ntime=19)
+#'  sptanova <- psar(form4,data=unemp_it,
+#'                   control=list(thr=1e-2,maxit=200,trace=FALSE))
+#'  summary(sptanova)
+#'  ### Plot spatial trend (ANOVA)
+#'  spttrend <- fit_terms(sptanova,"spttrend")
+#'  lon <- scale(unemp_it$long); lat <- scale(unemp_it$lat)
+#'  time <- unemp_it$year
+#'  ### Plot main effects
+#'  plot_main_spt(spttrend,sp1=lon,sp2=lat,time=time,nT=19)
+#'  
 #'  @export
-
+#'  
 
 fit_terms <- function(sptsarfit,variables){
   X <- sptsarfit$X
@@ -283,34 +349,11 @@ fit_terms <- function(sptsarfit,variables){
     }
   } # end for (i in 1:length(variables))
 
-  # se_fitted_terms <- matrix(0,nrow=nrow(fitted_terms),ncol=ncol(fitted_terms))
-  # colnames(se_fitted_terms) <- colnames(fitted_terms)
-  #
-  # for (i in 1:ncol(se_fitted_terms)){
-  #   se_fitted_terms[,i] <- sqrt(diag(as.matrix(var_fitted_terms[[i]])))
-  # }
-  # se_fitted_terms_fixed <- matrix(0,nrow=nrow(fitted_terms_fixed),
-  #                                 ncol=ncol(fitted_terms_fixed))
-  # colnames(se_fitted_terms_fixed) <- colnames(fitted_terms_fixed)
-  # for (i in 1:ncol(se_fitted_terms_fixed)){
-  #   se_fitted_terms_fixed[,i] <- sqrt(diag(as.matrix(var_fitted_terms_fixed[[i]])))
-  # }
-  # se_fitted_terms_random <- matrix(0,nrow=nrow(fitted_terms_random),
-  #                                 ncol=ncol(fitted_terms_random))
-  # colnames(se_fitted_terms_random) <- colnames(fitted_terms_random)
-  # for (i in 1:ncol(se_fitted_terms_random)){
-  #   se_fitted_terms_random[,i] <- sqrt(diag(as.matrix(var_fitted_terms_random[[i]])))
-  # }
   res <- list(fitted_terms = as.matrix(fitted_terms),
               se_fitted_terms = as.matrix(se_fitted_terms),
               fitted_terms_fixed = as.matrix(fitted_terms_fixed),
               se_fitted_terms_fixed = as.matrix(se_fitted_terms_fixed),
               fitted_terms_random = as.matrix(fitted_terms_random),
               se_fitted_terms_random = as.matrix(se_fitted_terms_random) )
-  # if (list_cov){
-  #   res$lcov_fitted <- var_fitted_terms
-  #   res$lcov_fitted_fixed <- var_fitted_terms_fixed
-  #   res$lcov_fitted_random <- var_fitted_terms_random
-  # }
   res
 }

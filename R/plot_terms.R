@@ -1,12 +1,64 @@
-plot_terms <- function(fit_terms,data,conflevel=0.95){
-  # Function to plot fitted terms X*\hat{\beta} + Z*\hat{\alpha}
+#' @name plot_terms
+#' @rdname plot_terms
+#'
+#' @title Plot terms of non-parametric covariates in PS-SAR 
+#'   regression models.
+#'        
+#' @description For each non-parametric covariate the plot of the term
+#'   includes confidence intervals and the decomposition in fixed and 
+#'   random part when the term is reparameterized as a mixed model.  
+#'
+#' @param fitterms object returned from \code{\link{fit_terms}} function.
+#' @param data dataframe with the data. 
+#' @param conflevel numerical value for the confidence interval of the
+#'   term. Default 0.95.
+#'
+#'@return plot of the terms for each non-parametric covariate included 
+#'  in the object returned from \code{\link{fit_terms}}.
+#'                                 
+#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{fit_terms}} compute smooth functions for non-parametric
+#'                                 continuous covariates.
+#'   \item \code{\link{plot_effects_nopar}} plot the effects functions 
+#'     of non-parametric covariates.
+#'   \item \code{\link[mgcv]{plot.gam}} plot the terms fitted by 
+#'     \code{\link[mgcv]{gam}} function in \pkg{mgcv} package.   
+#' }
+#' 
+#' @references \itemize{ 
+#'   \item Wood, S.N. (2017). \emph{Generalized Additive Models. 
+#'   An Introduction with \code{R}} (second edition). CRC Press, Boca Raton.
+#'  }
+#'         
+#' @examples
+#'  ###################### unemployment for 103 Italian provinces in period 1996-2014.
+#' library(sptpsar)
+#' data(unemp_it); Wsp <- Wsp_it
+#' ######################  No Spatial Trend: PSAR including a spatial 
+#' ######################  lag of the dependent variable
+#' form1 <- unrate ~ partrate + agri + cons +
+#'                  pspl(serv,nknots=15) +
+#'                  pspl(empgrowth,nknots=20) 
+#'  gamsar <- psar(form1,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
+#'  summary(gamsar)
+#'  ######################  Fit non-parametric terms (spatial trend must be name "spttrend")
+#'  list_varnopar <- c("serv","empgrowth")
+#'  terms_nopar <- fit_terms(gamsar,list_varnopar)
+#'  ######################  Plot non-parametric terms
+#'  plot_terms(terms_nopar,unemp_it)
+#'  
+#'  @export
 
-  fit <- fit_terms$fitted_terms
-  se_fit <- fit_terms$se_fitted_terms
-  fit_fixed <- fit_terms$fitted_terms_fixed
-  se_fit_fixed <- fit_terms$se_fitted_terms_fixed
-  fit_random <- fit_terms$fitted_terms_random
-  se_fit_random <- fit_terms$se_fitted_terms_random
+plot_terms <- function(fitterms,data,conflevel=0.95){
+  fit <- fitterms$fitted_terms
+  se_fit <- fitterms$se_fitted_terms
+  fit_fixed <- fitterms$fitted_terms_fixed
+  se_fit_fixed <- fitterms$se_fitted_terms_fixed
+  fit_random <- fitterms$fitted_terms_random
+  se_fit_random <- fitterms$se_fitted_terms_random
   variables <- colnames(fit)
   crval <- qnorm((1-conflevel)/2,mean=0,sd=1,lower.tail=FALSE)
 
@@ -60,14 +112,8 @@ plot_terms <- function(fit_terms,data,conflevel=0.95){
          ylim=c(min(low_fit_var),max(up_fit_var)),cex.lab=1.0,col=2,lty=1,lwd=2,
          cex.main=1.0,
          main=paste("Global (red), Fixed (green) and Random (blue) terms"))
-    #lines(var[ord],up_fit_var[ord],xlab="",ylab="",type="l",col=2,lty=2)
-    #lines(var[ord],low_fit_var[ord],xlab="",ylab="",type="l",col=2,lty=2)
     lines(var[ord],fit_var_fixed[ord],xlab="",ylab="",type="l",col=3,lty=2,lwd=2)
-    #lines(var[ord],up_fit_var_fixed[ord],xlab="",ylab="",type="l",col=3,lty=2)
-    #lines(var[ord],low_fit_var_fixed[ord],xlab="",ylab="",type="l",col=3,lty=2)
     lines(var[ord],fit_var_random[ord],xlab="",ylab="",type="l",col=4,lty=3,lwd=2)
-    #lines(var[ord],up_fit_var_random[ord],xlab="",ylab="",type="l",col=4,lty=2)
-    #lines(var[ord],low_fit_var_random[ord],xlab="",ylab="",type="l",col=4,lty=2)
     abline(a=0,b=0)
     readline(prompt="Press [enter] to continue")
   }

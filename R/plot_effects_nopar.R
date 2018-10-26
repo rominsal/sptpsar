@@ -1,9 +1,8 @@
 #' @name plot_eff_nopar
 #' @rdname plot_eff_nopar
 #'
-#' @title Plot direct, indirect and total effect functions 
-#'   for continous non-parametric covariates in spatial or 
-#'   spatio-temporal semiparametric PS-SAR regression models.
+#' @title Plot direct, indirect and total effects functions 
+#'   for continous non-parametric covariates in PS-SAR regression models.
 #'        
 #' @description Plot direct, indirect and total effect functions for 
 #'   non-parametric covariates included in a semiparametric spatial
@@ -21,11 +20,13 @@
 #' @param span span for the kernel of the smoothing (see \code{\link{loess}} 
 #'             for details). Default c(0.1,0.1,0.2). 
 #'
-#'@return plot of the direct, indirect and total effects function for each non-parametric
-#'        covariate included in the object returned from \code{\link{effects_nopar}}
+#' @return plot of the direct, indirect and total effects function for each non-parametric
+#'   covariate included in the object returned from \code{\link{effects_nopar}}.
 #'                                 
 #' @author Roman Minguez \email{roman.minguez@@uclm.es}
 #'
+#' @family Direct, Indirect and Total Effects.
+#' 
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{eff_nopar}} compute total, direct and indirect effect

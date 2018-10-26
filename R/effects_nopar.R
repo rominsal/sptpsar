@@ -1,9 +1,8 @@
 #' @name eff_nopar
 #' @rdname eff_nopar
 #'
-#' @title Compute direct, indirect and total effect functions 
-#'   for continous non-parametric covariates in spatial or 
-#'   spatio-temporal semiparametric PS-SAR regression models.
+#' @title Compute direct, indirect and total effects functions 
+#'   for continous non-parametric covariates in PS-SAR regression models.
 #'        
 #' @description Compute direct, indirect and total effect functions for 
 #'   non-parametric covariates included in a semiparametric spatial
@@ -12,9 +11,9 @@
 #'   different from 0, otherwise, total and direct function effects 
 #'   are the same.         
 #'
-#' @param sptsarfit \emph{psar} object fitted using \code{\link{psar}} function 
+#' @param sptsarfit \emph{psar} object fitted using \code{\link{psar}} function. 
 #' @param variables vector including names of non-parametric covariates.
-#' @param conflevel mumerical value for the confidence interval of the
+#' @param conflevel numerical value for the confidence interval of the
 #'    effect functions. Default 0.95.
 #'
 #' @details DESCRIBE ALGORITHM TO COMPUTE EFFECT FUNCTIONS AND THE 
@@ -35,19 +34,22 @@
 #'         
 #' @author Roman Minguez \email{roman.minguez@@uclm.es}
 #'
+#' @family Direct, Indirect and Total Effects.
+#' 
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
-#'   regression models.
+#'     regression models.
 #'   \item \code{\link{eff_par}} compute and simulate total, direct and indirect effect
-#'                                (or impacts) for parametric continuous covariates.
-#'   \item \code{\link{fit_terms}} compute smooth functions for non-parametric
-#'                                 continuous covariates.
+#'     (or impacts) for parametric continuous covariates.
+#'   \item \code{\link{fit_terms}} compute terms for smooth functions for non-parametric
+#'     continuous covariates and for non-parametric trends.
 #'   \item \code{\link{plot_effects_nopar}} plot the non-parametric effects functions
-#'                                          allowing for previous smoothing.
+#'     allowing for previous smoothing.
 #' }
 #' 
-#' @references \itemize{ 
+#' @references 
+#' \itemize{ 
 #'   \item Basile, R., Durbán, M., Mínguez, R., Montero, J.
 #'         M., and Mur, J. (2014). Modeling regional economic 
 #'         dynamics: Spatial dependence, spatial heterogeneity and 
@@ -116,6 +118,7 @@
 #' @keywords Indirect effects, Direct effects, SAR, non-parametric covariates.
 #'
 #' @export
+
 eff_nopar <- function(sptsarfit,variables,conflevel=0.95)
 {
   sar <- sptsarfit$sar

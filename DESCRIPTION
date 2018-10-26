@@ -5,9 +5,9 @@ Version: 0.0.0.9000
 Date: 2017-26-05
 Authors@R: person("Roman","Minguez",email="roman.minguez@uclm.es",role=c("aut","cre")) 
 Description: Estimation and inference of spatial and spatio-temporal semiparametric models 
-    including spatial or spatio-temporal non-parametric trend, parametric and non-parametric covariates
-    and, possibly, a spatial lag for the dependent variable. The spatio-temporal trend can be 
-    decomposed as an ANOVA function including main and interaction functions. 
+    including spatial or spatio-temporal non-parametric trends, parametric and non-parametric covariates
+    and, possibly, a spatial lag for the dependent variable and temporal correlation in the noise.
+    The spatio-temporal trend can be decomposed as an ANOVA function including main and interaction terms. 
     Use of SAP algorithm to estimate the spatial or spatio-temporal trend and non-parametric covariates. 
 License: GPL-3
 Encoding: UTF-8
@@ -19,7 +19,8 @@ Imports:
     spdep,
     splines,
     Rcpp (>= 0.12.14), 
-    RcppEigen (>= 0.3.3.3.1)
+    RcppEigen (>= 0.3.3.3.1),
+    Rdpack
 LinkingTo: Rcpp, RcppEigen
 Suggests:
     knitr,

@@ -3,11 +3,10 @@
 \name{eff_par}
 \alias{eff_par}
 \title{Compute direct, indirect and total effects (or impacts)
-  for continous parametric covariates in spatial or 
-  spatio-temporal semiparametric PS-SAR regression models.}
+  for continous parametric covariates in PS-SAR regression models.}
 \usage{
-eff_par(sptsarfit, variables, nrep = 1000, seed = 1111, m = 100, p = 50,
-  tol = 0.01)
+eff_par(sptsarfit, variables, nrep = 1000, seed = 1111, m = 100,
+  p = 50, tol = 0.01)
 }
 \arguments{
 \item{sptsarfit}{A \emph{psar} object fitted using \code{\link{psar}} function}
@@ -125,7 +124,11 @@ summary(sptanova_sar_ar1)
           package to compute impacts in spatial parametric econometric 
           models.                              
 }
+
+Other Direct, Indirect and Total Effects.: \code{\link{eff_nopar}},
+  \code{\link{plot_eff_nopar}}
 }
+\concept{Direct, Indirect and Total Effects.}
 \keyword{Direct}
 \keyword{Indirect}
 \keyword{SAR,}

@@ -1,3 +1,38 @@
+#' @name summary.psar
+#' @rdname summary.psar
+#'
+#' @title Summary method for psar objects.
+#' 
+#' @description This method summarizes both spatial (2-dimension) and
+#'   spatio-temporal (3-dimension) \emph{psar} objects. 
+#'   The tables include information of:
+#'   \itemize{
+#'      \item The spatial (or spatio-temporal) trends. When the model is ANOVA
+#'        the trend is decomposed in main and interaction effects. 
+#'      \item The parametric and non-parametric covariates. 
+#'      \item The \eqn{\rho} parameter when the model is SAR. 
+#'      \item The \eqn{\phi} parameter when the model is spatio-temporal 
+#'        with a first-order autorregressive in the noise.  
+#'  }
+#' 
+#' @param object \emph{psar} object fitted using \code{\link{psar}} function.
+#' @param ... further arguments passed to or from other methods. 
+#'   
+#' @return An object of class \emph{summary.psar}
+#'   
+#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
+#'   regression models.
+#' }   
+#' 
+#' @examples
+#'  See examples for \code{\link{psar}} function.
+#'   
+#' @export   
+
 summary.psar <- function(object,...)
 {
  z <- object

@@ -1,6 +1,85 @@
-plot_main_spt <- function(spttrend,sp1,sp2,nT,time=NULL,conflevel=0.95){
-# Function to plot main effects in spatio-temporal trends
+#' @name plot_main_spt
+#' @rdname plot_main_spt
+#'
+#' @title Plot main terms in ANOVA spatial or spatio-temporal trends.
+#'        
+#' @description Plot main terms for spatial and temporal coordinates 
+#'   in spatial (2d) or spatio-temporal (3d) trends decomposed in ANOVA
+#'   way.   
+#'
+#' @param spttrend object returned from \code{\link{fit_terms}} function
+#'   including \emph{spttrend} in the \emph{variables} argument.
+#' @param sp1 vector of first spatial coordinate. 
+#' @param sp2 vector of second spatial coordinate.
+#' @param time vector of temporal coordinate. It is NULL in spatial (2d)
+#'   trends. Default NULL.
+#' @param nT Number of time periods (1 for non-temporal data). Default 1.    
+#' @param conflevel numerical value for the confidence interval of the
+#'   trend functions. Default 0.95.
+#'   
+#' @return plot of each main trend (spatial and temporal) in ANOVA models.
+#'                                 
+#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{fit_terms}} compute the terms for non-parametric 
+#'     trend and smooth functions for non-parametric continuous covariates .
+#'   \item \code{\link[mgcv]{plot.gam}} plot the terms fitted by 
+#'     \code{\link[mgcv]{gam}} function in \pkg{mgcv} package.   
+#' }
+#' 
+#' @references 
+#' \itemize{ 
+#'   \item Lee, D. and Durbán, M. (2011). P-Spline ANOVA Type Interaction 
+#'         Models for Spatio-Temporal Smoothing. \emph{Statistical Modelling}, (11), 49-69.
+#'  }
+#'         
+#' @examples
+#' ################################################
+#'  ###################### Examples using a panel data of rate of
+#'  ###################### unemployment for 103 Italian provinces in period 1996-2014.
+#' library(sptpsar)
+#' data(unemp_it); Wsp <- Wsp_it
+#' ###############################################
+#'  # Spatial (2d) semiparametric ANOVA model without spatial lag
+#'  # Interaction term f12 with nested basis
+#' form3 <- unrate ~ partrate + agri + cons +
+#'                   pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+#'                   pspt(long,lat,nknots=c(20,20),psanova=TRUE,
+#'                   nest_sp1=c(1,2),nest_sp2=c(1,2))
+#' # Spatial trend fixed for period 1996-2014
+#' geospanova <- psar(form3,data=unemp_it)
+#' summary(geospanova)
+#' ### Plot spatial trend (ANOVA)
+#' spttrend <- fit_terms(geospanova,"spttrend")
+#' lon <- scale(unemp_it$long); lat <- scale(unemp_it$lat)
+#' ### Plot main effects
+#' plot_main_spt(spttrend,sp1=lon,sp2=lat,nT=19)
+#' 
+#' #'  ###############################################
+#'  # Spatio-temporal (3d) semiparametric ANOVA model without spatial lag
+#'  # Interaction terms f12,f1t,f2t and f12t with nested basis
+#'  # Remark: It is necessary to include ntime as argument
+#'  # Remark: nest_sp1, nest_sp2 and nest_time must be divisors of nknots
+#'  form4 <- unrate ~ partrate + agri + cons +
+#'                    pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+#'                    pspt(long,lat,year,nknots=c(18,18,8),psanova=TRUE,
+#'                    nest_sp1=c(1,2,3),nest_sp2=c(1,2,3),
+#'                    nest_time=c(1,2,2),ntime=19)
+#'  sptanova <- psar(form4,data=unemp_it,
+#'                   control=list(thr=1e-2,maxit=200,trace=FALSE))
+#'  summary(sptanova)
+#'  ### Plot spatial trend (ANOVA)
+#'  spttrend <- fit_terms(sptanova,"spttrend")
+#'  lon <- scale(unemp_it$long); lat <- scale(unemp_it$lat)
+#'  time <- unemp_it$year
+#'  ### Plot main effects
+#'  plot_main_spt(spttrend,sp1=lon,sp2=lat,time=time,nT=19)
+#' 
+#' @export
 
+plot_main_spt <- function(spttrend,sp1,sp2,nT=1,time=NULL,conflevel=0.95){
   fit_spt <- spttrend$fitted_terms
   se_fit_spt <- spttrend$se_fitted_terms
   n <- nrow(fit_spt)

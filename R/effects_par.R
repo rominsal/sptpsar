@@ -2,8 +2,7 @@
 #' @rdname eff_par
 #'
 #' @title Compute direct, indirect and total effects (or impacts)
-#'   for continous parametric covariates in spatial or 
-#'   spatio-temporal semiparametric PS-SAR regression models.
+#'   for continous parametric covariates in PS-SAR regression models.
 #'        
 #' @description Compute direct, indirect and total effects (also named
 #'   impacts) for non-parametric covariates included in a semiparametric spatial
@@ -43,6 +42,8 @@
 #'            \emph{ind_eff} \tab Matrix including simulated indirect effects 
 #'                                for each variable in rows. \cr
 #'          }                      
+#' 
+#' @family Direct, Indirect and Total Effects.
 #' 
 #' @seealso
 #' \itemize{
@@ -113,7 +114,8 @@
 #' @keywords Indirect effects, Direct effects, SAR, parametric covariates.
 #'
 #' @export
-#'
+
+
 eff_par <- function(sptsarfit,variables,
                     nrep=1000,seed=1111,
                     m=100,p=50,tol=0.01){

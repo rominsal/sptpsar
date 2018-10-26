@@ -126,8 +126,7 @@
 #'   SAP and numerical optimization of \eqn{\rho} and \eqn{\phi} is applied until
 #'   convergence. See details in \emph{Mínguez et al.}, (2018).
 #'
-#' @return
-#' A list object of class \emph{psar}
+#' @return A list object of class \emph{psar}
 #' \tabular{ll}{
 #'  \code{call} \tab Call of the function. \cr
 #'  \code{terms} \tab The terms object used. \cr
@@ -458,12 +457,13 @@
 #'  # Spatio-temporal semiparametric model (no ANOVA) without spatial lag
 #'  # Remark: Be careful with the number of knots
 #'  #    (spend a lot of time fitting...)
-#'   form6 <- unrate ~ partrate + agri + cons +
+#'  form6 <- unrate ~ partrate + agri + cons +
 #'                   pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
 #'                   pspt(long,lat,year,nknots=c(10,10,6),ntime=19)
-#'  spt <- psar(form6,data=unemp_it,Wsp=Wsp_it,
+#'  \dontrun{
+#'    spt <- psar(form6,data=unemp_it,Wsp=Wsp_it,
 #'                     control=list(thr=1e-1,maxit=200,trace=TRUE))
-#'  summary(spt)
+#'    summary(spt) }
 #'
 #'
 #' @keywords P-Spline, SAR, Spatio-Temporal Trends, Semiparametric Models
