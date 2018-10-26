@@ -6,8 +6,9 @@
   regression models.}
 \usage{
 psar(formula, data, Wsp = NULL, sar = FALSE, ar1 = FALSE,
-  control = list(vary_init = NULL, thr = 0.001, maxit = 200, trace = FALSE,
-  rho_init = 0, phi_init = 0, rho_fixed = FALSE, phi_fixed = FALSE), ...)
+  control = list(vary_init = NULL, thr = 0.001, maxit = 200, trace =
+  FALSE, rho_init = 0, phi_init = 0, rho_fixed = FALSE, phi_fixed = FALSE),
+  ...)
 }
 \arguments{
 \item{formula}{A formula similar to GAM specification including
@@ -419,12 +420,13 @@ summary(geospanova_sar)
  # Spatio-temporal semiparametric model (no ANOVA) without spatial lag
  # Remark: Be careful with the number of knots
  #    (spend a lot of time fitting...)
-  form6 <- unrate ~ partrate + agri + cons +
+ form6 <- unrate ~ partrate + agri + cons +
                   pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
                   pspt(long,lat,year,nknots=c(10,10,6),ntime=19)
- spt <- psar(form6,data=unemp_it,Wsp=Wsp_it,
+ \dontrun{
+   spt <- psar(form6,data=unemp_it,Wsp=Wsp_it,
                     control=list(thr=1e-1,maxit=200,trace=TRUE))
- summary(spt)
+   summary(spt) }
 
 
 }
