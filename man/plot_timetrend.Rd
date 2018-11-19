@@ -25,8 +25,8 @@ plot_timetrend(sptsarfit, data, time = "year", spat = "region",
 }
 \description{
 In models including a spatio-temporal trend plot a time
-  trend for each combination of spatial coordinates (centroid). It 
-  is useful to detect heterogeneous pattern of time trends for each
+  trend for each spatial unit in the dataframe. 
+  It can be useful to detect heterogeneous pattern of time trends for each
   spatial unit.
 }
 \examples{

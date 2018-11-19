@@ -239,7 +239,7 @@ XZ3d <-  function(x1,x2,x3,decom=2,psanova=FALSE,
 buildXZ <-
   function(x1,x2,x3=NULL,
            ANOVA=TRUE,ANOVA_part=FALSE,
-           f1_main=TRUE,f2_main=TRUE,f3.main=TRUE,
+           f1_main=TRUE,f2_main=TRUE,f3_main=TRUE,
            f12_int=TRUE,f13_int=TRUE,f23_int=TRUE,f123_int=TRUE,
            div_sp=c(1,1),div_tm=c(1,1),
            x1lim=NULL, x2lim=NULL,x3lim=NULL,

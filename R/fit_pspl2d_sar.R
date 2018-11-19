@@ -38,7 +38,8 @@ fit_pspl2d_sar <- function(y,vary_init,sp1=NULL,sp2=NULL,Xfull,Zfull,Wsp = NULL,
       # CALCULAR LLIK Y LLIKREML CON LA FÓRMULA...
 
 
-      res <- list(edfspt = NULL, edfnopar = NULL, edftot = parameters,
+      res <- list(edfspt = NULL, edfnopar = NULL, 
+                  edftot = param_sar$parameters,
                   tauspt = NULL, taunopar = NULL,
                   psanova = NULL, sar = sar,
                   fitted.values = param_sar$fitted.values,
@@ -211,7 +212,7 @@ fit_pspl2d_sar <- function(y,vary_init,sp1=NULL,sp2=NULL,Xfull,Zfull,Wsp = NULL,
   foptim <- llik_reml_var2d(c(rho),
                           sig2u=sig2u,nsp=nfull,
                           Wsp=Wsp_full,y=y,X=X,Z=Z,G_eff=G_eff,
-                          np_eff=npeff,bfixed=bfixed,rho_fixed=rho_fixed)
+                          np_eff=np_eff,bfixed=bfixed,rho_fixed=rho_fixed)
   llik_reml <- foptim$llik_reml
   llik <- foptim$llik
   se_rho_an <- foptim$se_rho

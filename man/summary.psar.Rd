@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.psar.R
 \name{summary.psar}
 \alias{summary.psar}
-\title{Summary method for psar objects.}
+\title{Summary method for objects of class psar.}
 \usage{
 \method{summary}{psar}(object, ...)
 }
@@ -16,25 +16,26 @@ An object of class \emph{summary.psar}
 }
 \description{
 This method summarizes both spatial (2-dimension) and
-  spatio-temporal (3-dimension) \emph{psar} objects. 
+  spatio-temporal (3-dimension) \emph{psar} objects.
   The tables include information of:
   \itemize{
      \item The spatial (or spatio-temporal) trends. When the model is ANOVA
-       the trend is decomposed in main and interaction effects. 
-     \item The parametric and non-parametric covariates. 
-     \item The \eqn{\rho} parameter when the model is SAR. 
-     \item The \eqn{\phi} parameter when the model is spatio-temporal 
-       with a first-order autorregressive in the noise.  
+       the trend is decomposed in main and interaction effects.
+     \item The parametric and non-parametric covariates.
+     \item The \eqn{\rho} parameter when the model is SAR.
+     \item The \eqn{\phi} parameter when the model is spatio-temporal
+       with a first-order autorregressive in the noise.
  }
 }
 \examples{
  See examples for \\code{\\link{psar}} function.
-  
+
 }
 \seealso{
 \itemize{
   \item \code{\link{psar}} estimate spatial or spatio-temporal semiparametric PS-SAR
   regression models.
+  \item \code{\link{print.summary.psar}} print objects of class \emph{summary.psar}
 }
 }
 \author{

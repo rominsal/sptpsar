@@ -276,7 +276,7 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
   foptim <- llik_reml_var3d(c(rho,phi),
                           sig2u=sig2u,nsp=nsp,ntime=ntime,
                           Wsp=Wsp,y=y,X=X,Z=Z,G_eff=G_eff,
-                          np_eff=npeff,bfixed=bfixed,
+                          np_eff=np_eff,bfixed=bfixed,
                           rho_fixed=rho_fixed,phi_fixed=phi_fixed)
   llik_reml <- foptim$llik_reml
   llik <- foptim$llik
@@ -285,7 +285,7 @@ fit_pspt3d_sar <- function(y,vary_init,sp1,sp2,time,Xfull,Zfull,Wsp = NULL,
   cov_rho_phi_an <- foptim$cov_rho_phi
   rm(foptim)
   if (var_num){
-    hessian_optim <- numDeriv::hessian(llik_reml_fn,c(rho,phi),
+    hessian_optim <- numDeriv::hessian(llik_reml_fn3d,c(rho,phi),
                                        sig2u=sig2u,nsp=nsp,ntime=ntime,
                                        Wsp=Wsp,y=y,X=X,Z=Z,G_eff=G_eff,
                                        np_eff=np_eff,

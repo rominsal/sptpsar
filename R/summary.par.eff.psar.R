@@ -1,3 +1,30 @@
+#' @name summary.par.eff.psar
+#' @rdname summary.par.eff.psar
+#'
+#' @title Summary method for object of class par.eff.psar.
+#'
+#' @description This method summarizes direct, indirect and total effects (or impacts)
+#'   for continous parametric covariates in PS-SAR regression models.
+#'
+#' @param object \emph{par.eff.psar} object fitted using \code{\link{psar}} function.
+#' @param ... further arguments passed to or from other methods.
+#'
+#' @return An object of class \emph{summary.par.eff.psar}
+#'
+#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{eff_par}} Compute direct, indirect and total
+#'     effects (or impacts)
+#'     for continous parametric covariates in PS-SAR regression models.
+#'   \item \code{\link{print.summary.par.eff.psar}} print objects of
+#'     class \emph{summary.par.eff.psar}
+#' }
+#'
+#' @examples
+#'   See examples for \code{\link{effects_par}} function.
+#' @export
 summary.par.eff.psar <- function(object,...)
 {
  z <- object

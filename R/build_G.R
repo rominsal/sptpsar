@@ -1,5 +1,5 @@
 # Function to build G matrix
-build_G2d <- function (la, lg, nvarnopar = 0, dnoparlist = NULL,
+build_G2d <- function(la, lg, nvarnopar = 0, dnoparlist = NULL,
                        psanova = TRUE,
                        f1_main=TRUE, f2_main=TRUE, f12_int=TRUE) {
   g1u <- lg$g1u; g2u <- lg$g2u; g1b <- lg$g1b; g2b <- lg$g2b
@@ -25,6 +25,7 @@ build_G2d <- function (la, lg, nvarnopar = 0, dnoparlist = NULL,
       if (f12_int) {
         Ginv_f12 <- c((1/la[4])*g1v, (1/la[5])*g2v, (1/la[4])*g1b + (1/la[5])*g2b)
         Ginv_eff <- c(Ginv_eff,Ginv_f12) } else {
+          g12u <- lg$g12u; g21u <- lg$g21u; g12b <- lg$g12b 
           Ginv_f12 <- rep(0,length(g12u) + length(g21u) + length(g12b))
         }
       # CONSTRUCCIÓN Ginv COMPLETA (INCLUYENDO 0's SI LOS HAY)
@@ -48,7 +49,7 @@ build_G2d <- function (la, lg, nvarnopar = 0, dnoparlist = NULL,
 ##########################################################################
 
 # Function to build G matrix
-build_G3d <- function (la, lg, nvarnopar = 0, dnoparlist = NULL,
+build_G3d <- function(la, lg, nvarnopar = 0, dnoparlist = NULL,
                           psanova = TRUE,
                           f1_main=TRUE, f2_main=TRUE, ft_main=TRUE,
                           f12_int=TRUE,f1t_int=TRUE,f2t_int=TRUE,

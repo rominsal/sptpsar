@@ -1,4 +1,36 @@
-anova.psar <- function(object,..., dispersion = NULL, test = NULL, freq = FALSE)
+#' @name anova.psar
+#' @rdname anova.psar
+#'
+#' @title Build an ANOVA table of fitted semiparametric models.
+#' @description Method to compare goodness-of-fit measures of
+#'   fitted spatio-temporal semiparametric PS-SAR regression models.
+#'
+#' @param object a fitted semiparametric model of class \emph{psar}.
+#' @param ... additional fitted models to be compared.
+#' @return A class \emph{anova.psar} table including
+#'   goodness-of-fit measures for each fitted model.
+#'   This table is also printed.
+#' @author Roman Minguez \email{roman.minguez@@uclm.es}
+#' @examples
+#' ################################################
+#'  ###################### Examples using a panel data of rate of
+#'  ###################### unemployment for 103 Italian provinces in period 1996-2014.
+#' library(sptpsar)
+#' data(unemp_it); Wsp <- Wsp_it
+#'  ######################  GAM pure
+#' form1 <- unrate ~ partrate + agri + cons +
+#'                  pspl(serv,nknots=15) +
+#'                  pspl(empgrowth,nknots=20)
+#' gam <- psar(form1,data=unemp_it)
+#' gamsar <- psar(form1,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
+#' form2 <- unrate ~ partrate + agri + cons +
+#'   pspl(serv,nknots=15) + pspl(empgrowth,nknots=20) +
+#'   pspt(long,lat,nknots=c(20,20),psanova=TRUE)
+#' gamsp2d <- psar(form2,data=unemp_it)
+#' gamsp2dsar <- psar(form2,data=unemp_it,sar=TRUE,Wsp=Wsp_it)
+#' anova(gam,gamsar,gamsp2d,gamsp2dsar)
+#' @export
+anova.psar <- function(object, ...)
 {
   objects <- list(object, ...)
   ns <- sapply(objects, function(x) length(x$residuals))
@@ -26,7 +58,7 @@ anova.psar <- function(object,..., dispersion = NULL, test = NULL, freq = FALSE)
   dimnames(table) <- list(1L:nmodels, c("EDF","logLik",
                                         "RlogLik","AIC","BIC",
                                         "Res.Df", "Sigma.Sq"))
-  print(table) # Change the format...
+  print(table)
   class(table) <- "anova.psar"
   invisible(table)
 }

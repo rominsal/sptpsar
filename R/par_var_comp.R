@@ -1,7 +1,7 @@
 # Functions to compute vectors of variance component matrix of random effects
 # in models 3d and 2d
 ##############################################################################
-par_var_comp2d <- function (la, np_fixed, pordspt, cspt, dsptlist,
+par_var_comp2d <- function(la, np_fixed, pordspt, cspt, dsptlist,
                             nvarnopar = 0, cnopar = NULL, pordnopar = NULL,
                             dnoparlist=NULL, psanova = TRUE, f1_main=TRUE,
                             f2_main=TRUE, ft_main=TRUE, f12_int=TRUE){
@@ -114,7 +114,7 @@ par_var_comp2d <- function (la, np_fixed, pordspt, cspt, dsptlist,
 }
 
 ###############################################################################
-par_var_comp3d <- function (la, np_fixed,
+par_var_comp3d <- function(la, np_fixed,
                           pordspt,cspt,dsptlist,
                           nvarnopar = 0,cnopar = NULL, pordnopar = NULL, dnoparlist=NULL,
                           psanova = TRUE,f1_main=TRUE, f2_main=TRUE, ft_main=TRUE,

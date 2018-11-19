@@ -198,7 +198,7 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
   foptim <- llik_reml_var2d(c(rho),
                           sig2u=sig2u,nsp=nsp_full,
                           Wsp=Wsp_full,y=y,X=X,Z=Z,G_eff=G_eff,
-                          np_eff=npeff,bfixed=bfixed,rho_fixed=rho_fixed)
+                          np_eff=np_eff,bfixed=bfixed,rho_fixed=rho_fixed)
   llik_reml <- foptim$llik_reml
   llik <- foptim$llik
   se_rho_an <- foptim$se_rho

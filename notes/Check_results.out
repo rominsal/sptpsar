@@ -1,0 +1,222 @@
+==> devtools::check()
+
+Updating sptpsar documentation
+Writing NAMESPACE
+Loading sptpsar
+Writing NAMESPACE
+-- Building --------------------------------------- sptpsar --
+Setting env vars:
+* CFLAGS    : -Wall -pedantic -fdiagnostics-color=always
+* CXXFLAGS  : -Wall -pedantic -fdiagnostics-color=always
+* CXX11FLAGS: -Wall -pedantic -fdiagnostics-color=always
+--------------------------------------------------------------
+v  checking for file 'C:\Users\roman\Documents\GitHub\sptpsar/DESCRIPTION' ... 
+-  preparing 'sptpsar': (1.1s)
+v  checking DESCRIPTION meta-information ...
+-  cleaning src
+-  checking for LF line-endings in source and make files and shell scripts
+-  checking for empty or unneeded directories
+-  looking to see if a 'data/datalist' file should be added
+-  building 'sptpsar_0.0.0.9000.tar.gz'
+   
+-- Checking --------------------------------------- sptpsar --
+Setting env vars:
+* _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
+* _R_CHECK_CRAN_INCOMING_       : FALSE
+* _R_CHECK_FORCE_SUGGESTS_      : FALSE
+-- R CMD check -----------------------------------------------------------------
+   Warning in dir.create(pkgoutdir, mode = "0755") :*
+     'C:\Users\roman\Documents\GitHub\sptpsar.Rcheck' already exists
+    using log directory 'C:/Users/roman/Documents/GitHub/sptpsar.Rcheck'
+-  using R version 3.5.1 (2018-07-02)
+-  using platform: x86_64-w64-mingw32 (64-bit)
+-  using session charset: ISO8859-1
+-  using options '--no-manual --as-cran'
+v  checking for file 'sptpsar/DESCRIPTION'
+-  checking extension type ... Package
+-  this is package 'sptpsar' version '0.0.0.9000'
+-  package encoding: UTF-8
+v  checking package namespace information ...
+v  checking package dependencies (2.9s)
+v  checking if this is a source package ...
+v  checking if there is a namespace ...
+v  checking for executable files (494ms)
+v  checking for hidden files and directories ... 
+v  checking for portable file names ... 
+v  checking serialization versions ...
+v  checking whether package 'sptpsar' can be installed (37.8s)
+v  checking installed package size ... 
+v  checking package directory
+v  checking DESCRIPTION meta-information (410ms)
+N  checking top-level files ...
+   Non-standard file/directory found at top level:
+     'Check_results.out'
+v  checking for left-over files
+v  checking index information
+v  checking package subdirectories ... 
+v  checking R files for non-ASCII characters ... 
+v  checking R files for syntax errors ... 
+-  loading checks for arch 'i386'
+   ** checking whether the package can be loaded ... OK
+   ** checking whether the package can be loaded with stated dependencies ... OK
+   ** checking whether the package can be unloaded cleanly ... OK
+   ** checking whether the namespace can be loaded with stated dependencies ... OK
+   ** checking whether the namespace can be unloaded cleanly ... OK
+   ** checking loading without being on the library search path ... OK
+-  loading checks for arch 'x64'
+   ** checking whether the package can be loaded ... OK
+   ** checking whether the package can be loaded with stated dependencies ... OK
+   ** checking whether the package can be unloaded cleanly ... OK
+   ** checking whether the namespace can be loaded with stated dependencies ... OK
+   ** checking whether the namespace can be unloaded cleanly ... OK
+   ** checking loading without being on the library search path ... OK
+v  checking dependencies in R code (1.3s)
+v  checking S3 generic/method consistency (1.8s)
+v  checking replacement functions (1s)
+v  checking foreign function calls (1.5s)
+v  checking R code for possible problems (11.4s)
+v  checking Rd files ... 
+v  checking Rd metadata ... 
+v  checking Rd line widths ... 
+W  checking Rd cross-references (339ms)
+   Missing link or links in documentation object 'eff_nopar.Rd':
+     'plot_effects_nopar'
+   
+   Missing link or links in documentation object 'plot_eff_nopar.Rd':
+     'effects_nopar'
+   
+   Missing link or links in documentation object 'plot_terms.Rd':
+     'plot_effects_nopar'
+   
+   See section 'Cross-references' in the 'Writing R Extensions' manual.
+   
+W  checking for missing documentation entries (1.2s)
+   Undocumented code objects:
+     'AAt' 'Ainv' 'AtA' 'AtAsp' 'B_XZ' 'B_XZ_spt' 'Bspt' 'H' 'MM_basis'
+     'RH' 'Rotate' 'Rten2' 'Wsp_it' 'XZ3d' 'bspline' 'buildXZ' 'build_G2d'
+     'build_G3d' 'build_Omega_ar1' 'construct_block' 'construct_matrices'
+     'detlltA' 'detlltAsp' 'fit_pspl2d_sar' 'fit_pspt2d_sar'
+     'fit_pspt3d_sar' 'fitpsar2d' 'ldetluAsp' 'llik_reml_fn2d'
+     'llik_reml_fn3d' 'llik_reml_var2d' 'llik_reml_var3d' 'lltA' 'lltAinv'
+     'lltAsp' 'par_var_comp2d' 'par_var_comp3d' 'pspl' 'pspt' 'score_phi'
+     'score_rho' 'score_rho_phi' 'unemp_it' 'update_tau2d' 'update_tau3d'
+   Undocumented data sets:
+     'Wsp_it' 'unemp_it'
+   All user-level objects in a package should have documentation entries.
+   See chapter 'Writing R documentation files' in the 'Writing R
+   Extensions' manual.
+v  checking for code/documentation mismatches (3.3s)
+W  checking Rd \usage sections (340ms)
+   Undocumented arguments in documentation object 'coef.psar'
+     'object'
+   Documented arguments not in \usage in documentation object 'coef.psar':
+     'z'
+   
+   Duplicated \argument entries in documentation object 'print.summary.psar':
+     'x' 'digits' '...'
+   
+   Undocumented arguments in documentation object 'psar'
+     '...'
+   
+   Functions with \usage entries need to have the appropriate \alias
+   entries, and all their arguments documented.
+   The \usage entries must correspond to syntactically valid R code.
+   See chapter 'Writing R documentation files' in the 'Writing R
+   Extensions' manual.
+v  checking Rd contents (1.9s)
+W  checking for unstated dependencies in examples (457ms)
+   Warning: parse error in file 'sptpsar-Ex.R':
+   11: unexpected symbol
+   233:  ###############################################
+   234:  Examples of
+                  ^
+v  checking contents of 'data' directory ...
+W  checking data for non-ASCII characters (357ms)
+     Warning: found non-ASCII string
+     'Forll-Cesena' in object 'unemp_it'
+v  checking data for ASCII and uncompressed saves (349ms)
+v  checking line endings in C/C++/Fortran sources/headers ...
+v  checking pragmas in C/C++ headers and code ... 
+v  checking compilation flags used ...
+v  checking compiled code (12.5s)
+-  checking examples ...
+   Warning in dir.create(tdir) :** running examples for arch 'i386' ... ERROR
+   Running examples in 'sptpsar-Ex.R' failed
+    'examples_i386' already exists
+   Warning in file(con, "r") :
+     no fue posible abrir el archivo '../sptpsar-Ex_i386.Rout': Permission denied
+   Error in file(con, "r") : no se puede abrir la conexi�n
+   Ejecuci�n interrumpida
+-- R CMD check results --------------------------------- sptpsar 0.0.0.9000 ----
+Duration: 1m 36.4s
+
+> checking examples ...
+  ** running examples for arch 'i386' ... ERROR
+  Running examples in 'sptpsar-Ex.R' failed
+
+> checking Rd cross-references ... WARNING
+  Missing link or links in documentation object 'eff_nopar.Rd':
+    'plot_effects_nopar'
+  
+  Missing link or links in documentation object 'plot_eff_nopar.Rd':
+    'effects_nopar'
+  
+  Missing link or links in documentation object 'plot_terms.Rd':
+    'plot_effects_nopar'
+  
+  See section 'Cross-references' in the 'Writing R Extensions' manual.
+
+> checking for missing documentation entries ... WARNING
+  Undocumented code objects:
+    'AAt' 'Ainv' 'AtA' 'AtAsp' 'B_XZ' 'B_XZ_spt' 'Bspt' 'H' 'MM_basis'
+    'RH' 'Rotate' 'Rten2' 'Wsp_it' 'XZ3d' 'bspline' 'buildXZ' 'build_G2d'
+    'build_G3d' 'build_Omega_ar1' 'construct_block' 'construct_matrices'
+    'detlltA' 'detlltAsp' 'fit_pspl2d_sar' 'fit_pspt2d_sar'
+    'fit_pspt3d_sar' 'fitpsar2d' 'ldetluAsp' 'llik_reml_fn2d'
+    'llik_reml_fn3d' 'llik_reml_var2d' 'llik_reml_var3d' 'lltA' 'lltAinv'
+    'lltAsp' 'par_var_comp2d' 'par_var_comp3d' 'pspl' 'pspt' 'score_phi'
+    'score_rho' 'score_rho_phi' 'unemp_it' 'update_tau2d' 'update_tau3d'
+  Undocumented data sets:
+    'Wsp_it' 'unemp_it'
+  All user-level objects in a package should have documentation entries.
+  See chapter 'Writing R documentation files' in the 'Writing R
+  Extensions' manual.
+
+> checking Rd \usage sections ... WARNING
+  Undocumented arguments in documentation object 'coef.psar'
+    'object'
+  Documented arguments not in \usage in documentation object 'coef.psar':
+    'z'
+  
+  Duplicated \argument entries in documentation object 'print.summary.psar':
+    'x' 'digits' '...'
+  
+  Undocumented arguments in documentation object 'psar'
+    '...'
+  
+  Functions with \usage entries need to have the appropriate \alias
+  entries, and all their arguments documented.
+  The \usage entries must correspond to syntactically valid R code.
+  See chapter 'Writing R documentation files' in the 'Writing R
+  Extensions' manual.
+
+> checking for unstated dependencies in examples ... WARNING
+  Warning: parse error in file 'sptpsar-Ex.R':
+  11: unexpected symbol
+  233:  ###############################################
+  234:  Examples of
+                 ^
+
+> checking data for non-ASCII characters ... WARNING
+    Warning: found non-ASCII string
+    'Forll-Cesena' in object 'unemp_it'
+
+> checking top-level files ... NOTE
+  Non-standard file/directory found at top level:
+    'Check_results.out'
+
+1 error x | 5 warnings x | 1 note x
+Error: R CMD check found ERRORs
+Ejecuci�n interrumpida
+
+Exited with status 1.
