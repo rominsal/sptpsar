@@ -1,0 +1,41 @@
+Package: sptpsar
+Type: Package
+Title: Spatio-Temporal Semiparametric Models with Spatial Lags
+Version: 1.0
+Date: 2018-16-11
+Authors@R: person("Roman","Minguez",email="roman.minguez@uclm.es",
+    role=c("aut","cre")) 
+Description: Estimation and inference of spatial and spatio-temporal 
+    semiparametric models including spatial or spatio-temporal non-parametric 
+    trends, parametric and non-parametric covariates and, possibly, a spatial 
+    lag for the dependent variable and temporal correlation in the noise.
+    The spatio-temporal trend can be decomposed in ANOVA way including main and 
+    interaction functional terms. Use of SAP algorithm to estimate the spatial 
+    or spatio-temporal trend and non-parametric covariates. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    graphics,
+    MASS,
+    Matrix,
+    methods,
+    nloptr,
+    numDeriv,
+    plyr,
+    rootSolve,
+    spdep,
+    splines,
+    stats,
+    Rcpp (>= 0.12.14), 
+    RcppEigen (>= 0.3.3.3.1)
+LinkingTo: Rcpp, RcppEigen
+Suggests:
+    knitr,
+    rmarkdown,
+    Rdpack
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+RdMacros: Rdpack
+URL: http://github.com/rominsal/sptpsar
+BugReports: http://github.com/rominsal/sptpsar/issues
