@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
                            nvarpar,nvarnopar,nvarspt,
                            #weights = NULL, GLAM = FALSE,
@@ -582,4 +581,4 @@ fit_pspt2d_sar <- function(y,vary_init,sp1,sp2,Xfull,Zfull,Wsp = NULL,
               vcov_b = cov1_eff,
               sp1 = sp1,sp2 = sp2, time = NULL)
 } # end of function
->>>>>>> 3dd5daf8ee882992716e3954f4de5c576169b2fa
+
